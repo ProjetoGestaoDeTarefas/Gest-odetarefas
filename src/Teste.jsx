@@ -1,6 +1,6 @@
 //ESTES ARQUIVOS SERVEM APENAS COMO BASE DE CRUD
 //REQUEST
-
+//Aqui é onde puxamos os dados do Banco Firebase
 import { useState, useEffect } from "react";
 import { db } from "./Firebase/Firebase";
 import {
