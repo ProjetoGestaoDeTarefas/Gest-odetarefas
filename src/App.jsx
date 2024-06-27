@@ -1,12 +1,19 @@
 import './App.css'
 import  Cadastro  from './Cadastro';
-import { db } from './Firebase';
+import { db } from './Firebase/Firebase';
+import Teste2 from './Teste2';
+import Teste from './Teste';
+import Teste3 from './Teste3';
+import Teste4 from './Teste4';
 //npm install -g firebase-tools
  function App() {
 
   return (
       <div>
-        
+        <Teste />
+        <Teste2 />
+        <Teste3 />
+        <Teste4 />
         <Cadastro />
         </div>
      
