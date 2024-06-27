@@ -1,4 +1,4 @@
-import "./cadastro.module.css"
+import "./cadastro.module.css";
 // import React, { useState } from 'react';
 
 // import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
