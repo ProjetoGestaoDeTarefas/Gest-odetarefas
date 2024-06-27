@@ -28,13 +28,12 @@ export default function Teste() {
 
     tarefas.map(function (e, val) {
         return (
-            <div>{e?.data?.title}
-                <div>
-                    {e?.data?.description}
-                    <div>
-                        {e?.data?.status}
-                    </div>
-                </div>
+            <div className="list">
+            <ol>
+                <li>{e?.data?.title}</li>
+                <li>{e?.data?.description}</li>
+                <li>{e?.data?.status}</li>
+            </ol>
             </div>
         )
     })

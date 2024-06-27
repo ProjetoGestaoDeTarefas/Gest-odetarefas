@@ -5,7 +5,7 @@ import { doc, updateDoc, deleteField } from "firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
 import { db } from "./Firebase/Firebase";
 
-const taskRef = doc(db, 'task', 'WJOD98z6DJA0dGbgSgCY');/*AQUI TEM Q SER O ID DO !DOCUMENTO! QUE VOCE DESEJA APAGAR O CAMPO*/
+const taskRef = doc(db, 'taks', 'b51ZPJHYllW8SC6ANlqc');/*AQUI TEM Q SER O ID DO !DOCUMENTO! QUE VOCE DESEJA APAGAR O CAMPO*/
 
 export default function Teste4() {
     //delete de campo
@@ -23,8 +23,11 @@ export default function Teste4() {
 
   return (
     <>
-    <button onClick={delDoc}>Deleta um documento da coleção Task</button>
-    <button onClick={deleteTaskField}>Deleta um campo da Tarefa</button>
+     {/*Pelo que eu vi no firebase, não é recomendado apagar coleções por aqui.*/}
+      <button onClick={delDoc}>Deleta um documento da coleção</button>
+      {/*Deleta um documento da coleção Task*/}
+      <button onClick={deleteTaskField}>Deleta um campo do documento</button>
+      {/*Deleta um campo do documento cujos parametros passados*/}
     </>
-  )
+  );
 }
