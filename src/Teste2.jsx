@@ -17,7 +17,7 @@ const docData = {
     stringExample: "Hello world!",
     booleanExample: true,
     numberExample: 3.14159265,
-    dateExample: Timestamp.fromDate(new Date("December 10, 1815")),
+    dateExample: Timestamp.fromDate(new Date("December 10, 1815")),//"Date.now()" tambem funciona para pegar a data no momento em que o botao é pressionado.
     arrayExample: [5, true, "hello"],
     nullExample: null,
     objectExample: {
