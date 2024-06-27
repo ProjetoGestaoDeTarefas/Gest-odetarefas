@@ -1,5 +1,6 @@
 import './App.css'
-import  Cadastro  from './Cadastro';
+import { ProjetoEdit } from './Componentes/ProjetosEdit/ProjetoEdit';
+// import  Cadastro  from './Cadastro';
 import { db } from './Firebase';
 //npm install -g firebase-tools
  function App() {
@@ -7,7 +8,9 @@ import { db } from './Firebase';
   return (
       <div>
         
-        <Cadastro />
+        {/* <Cadastro /> */}
+        <ProjetoEdit />
+        
         </div>
      
   )

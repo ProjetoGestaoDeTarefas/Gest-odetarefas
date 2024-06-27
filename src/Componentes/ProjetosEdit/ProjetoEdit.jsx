@@ -3,7 +3,12 @@ import Table from 'react-bootstrap/Table';
 
 export function ProjetoEdit(){
     return(
-        <Table className={styles.tabela}striped="columns">
+      <div style={{paddingLeft:'300px',
+        display:'flex',
+                   justifyContent: 'center',
+                   alignItems: 'center',
+         }}>
+        <Table  striped="columns">
         <thead className={styles.cabecalho}>
           <tr>
             <th></th>
@@ -34,5 +39,6 @@ export function ProjetoEdit(){
           
         </tbody>
       </Table>
+      </div>
     )
 }
