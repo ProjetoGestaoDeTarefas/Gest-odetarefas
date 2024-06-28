@@ -1,20 +1,24 @@
 import './App.css'
+import { useState } from 'react';
 import  Cadastro  from './Cadastro';
 import { db } from './Firebase/Firebase';
 import Teste2 from './Teste2';
 import Teste from './Teste';
 import Teste3 from './Teste3';
 import Teste4 from './Teste4';
+import TaskCRUD from './Componentes/Task/TaskCRUD';
 //npm install -g firebase-tools
  function App() {
 
   return (
       <div>
-        <Teste />
+
+        {/* <Teste />
         <Teste2 />
         <Teste3 />
-        <Teste4 />
-        <Cadastro />
+        <Teste4 /> */}
+        {/* <Cadastro /> */}
+        <TaskCRUD/>
         </div>
      
   )
