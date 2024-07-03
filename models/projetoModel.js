@@ -29,11 +29,10 @@ class projetoModel {
 
   apiCreate(newprojeto) {
     const sql =
-      "INSERT INTO projetos (projeto_id, descricao, status_id, membro_id, dataCadastro) VALUES (?,?,1,?,CURRENT_DATE)";
+      "INSERT INTO projetos (id, descricao, membro_id, dataCadastro) VALUES (?,?,1,?,CURRENT_DATE)";
     const values = [
-      newprojeto.projeto_id,
+      newprojeto.id,
       newprojeto.descricao,
-      newprojeto.status_id,
       newprojeto.membro_id,
       newprojeto.datacadastro,
     ];
@@ -78,32 +77,57 @@ class projetoModel {
     return this.executeSQL(sql, [id]);
   }
 
-  readMembers() {
+  readEquipes() {
     const sql = `
         SELECT 
-          m.nome
+          e.id,
+          e.nome
         FROM 
-          membros m
-          INNER JOIN equipes e ON m.equipe_id = e.id
-          INNER JOIN projetos p ON e.projeto_id = p.id
+          equipes e
+          LEFT JOIN projetos p ON e.id = p.id
         WHERE 
-          p.id = ?;
+          p.id IS NULL;
     `;
     return this.executeSQL(sql);
   }
 
-
+  
   create(newprojeto) {
-    const sql =
-      "INSERT INTO projetos (projeto_id, descricao, status_id, membro_id, dataCadastro) VALUES (?,?,1,?,CURRENT_DATE)";
-    const values = [
-      newprojeto.projeto_id,
-      newprojeto.descricao,
-      newprojeto.status_id,
-      newprojeto.membro_id,
-      newprojeto.datacadastro,
-    ];
-    return this.executeSQL(sql, values);
+    return new Promise((resolve, reject) => {
+      this.executeSQL('START TRANSACTION')
+        .then(() => {
+          const sql1 =
+            `INSERT INTO projetos (id, nome, descricao, dataCadastro) VALUES (?, ?, ?, CURRENT_DATE);`;
+          const values1 = [
+            newprojeto.id,
+            newprojeto.nome,
+            newprojeto.descricao,
+          ];
+  
+          return this.executeSQL(sql1, values1);
+        })
+        .then(() => {
+          const sql2 =
+            `INSERT INTO equipes (projeto_id) VALUES (?);`;
+          const values2 = [
+            newprojeto.equipe.id,
+          ];
+  
+          return this.executeSQL(sql2, values2);
+        })
+        .then(() => {
+          return this.executeSQL('COMMIT');
+        })
+        .then((results) => {
+          resolve(results);
+        })
+        .catch((error) => {
+          this.executeSQL('ROLLBACK')
+            .then(() => {
+              reject(error);
+            });
+        });
+    });
   }
 
   update(updatedprojeto, id) {

@@ -66,8 +66,10 @@ class helpDeskDatabase {
     const sql = `
       CREATE TABLE IF NOT EXISTS projetos(
         id INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key', 
-        nome VARCHAR(50) NOT NULL,
-        descricao VARCHAR(200) NOT NULL
+        nome VARCHAR(50) NOT NULL DEFAULT 'Sem Nome',
+        descricao VARCHAR(200) NOT NULL,
+        dataCadastro DATETIME COMMENT 'Data de inclusão',
+        dataFinalizado DATETIME COMMENT 'Data da Finalização'
       ) COMMENT 'Tabela Projeto que é referencia para outras tabelas';
       `;
 
