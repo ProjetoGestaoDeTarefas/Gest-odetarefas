@@ -77,8 +77,8 @@ class projetoController{
     return ProjetoList
       .then((result) =>
         result.length == 0
-          ? res.status(404).render("./Projeto/Projeto_read", { title: "Listar Projeto", Projetos: result, search: '' })
-          : res.status(200).render("./Projeto/Projeto_read", { title: "Listar Projeto", Projetos: result , search: '' })
+          ? res.status(404).render("./Projeto/Projeto_read", { title: "Listar Projeto", projlist: result, search: '' })
+          : res.status(200).render("./Projeto/Projeto_read", { title: "Listar Projeto", Projlist: result, search: '' })
       )
       .catch((error) => res.status(400).send(error.message));  
   }
@@ -90,7 +90,7 @@ class projetoController{
       .then((result) =>
         result.length == 0
           ? res.status(404).redirect("/")
-          : res.status(200).render("./Projeto/Projeto_update", { title: "Atualizar cadastro de Projeto", Projetos: result })
+          : res.status(200).render("./Projeto/Projeto_update", { title: "Atualizar cadastro de Projeto", projeto: result })
       )
       .catch((error) => res.status(400).send(error.message));  
   }
@@ -155,8 +155,8 @@ class projetoController{
       return ProjetosList
         .then((result) =>
           result.length == 0
-            ? res.status(404).render("./Projeto/Projeto_read", { title: "Projeto", Projetos: result, search: req.body.search })
-            : res.status(200).render("./Projeto/Projeto_read", { title: "Projeto", Projetos: result, search: req.body.search })
+            ? res.status(404).render("./Projeto/Projeto_read", { title: "Projeto", projeto: result, search: req.body.search })
+            : res.status(200).render("./Projeto/Projeto_read", { title: "Projeto", projeto: result, search: req.body.search })
         )
         .catch((error) => res.status(400).send(error.message));  
     }

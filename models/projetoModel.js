@@ -56,17 +56,14 @@ class projetoModel {
   readList() {
     const sql = `
         SELECT 
-            t.id, 
-            t.descricao AS descricao, 
-            s.descricao AS status, 
-            DATE_FORMAT(t.dataCadastro, '%d/%m/%Y') AS dataCadastro, 
-            DATE_FORMAT(t.dataFinalizado, '%d/%m/%Y') AS dataFinalizado 
+            p.id, 
+            p.nome,
+            p.descricao,  
+            DATE_FORMAT(p.dataCadastro, '%d/%m/%Y') AS dataCadastro, 
+            DATE_FORMAT(p.dataFinalizado, '%d/%m/%Y') AS dataFinalizado 
         FROM 
-            projetos t 
-        INNER JOIN 
-            status s 
-        ON 
-            s.id = t.status_id
+            projetos p 
+        
     `;
     return this.executeSQL(sql);
   }

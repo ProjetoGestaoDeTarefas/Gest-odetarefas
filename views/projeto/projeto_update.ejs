@@ -1,0 +1,70 @@
+<%- include('../header') %>
+
+<% if ( projeto !='' ) { projeto.forEach((row, index)=> { %>
+<!-- Page Heading -->
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Editar o projeto <%= row.id %> Projeto: <%= row.projeto %></h1>
+  <div class="card shadow">
+    <div class="row pl-3 pr-3 pt-1">
+      <div class="col-md-12 mx-auto">
+        <form action="/tarefa/<%= row.id %>"" method="POST">
+          <div class="mb-1">
+            <label for="name" class="pl-1 col-form-label col-form-label-sm"
+              >Descrição:</label
+            >
+            <input
+              type="text"
+              name="descricao"
+              class="form-control form-control-md"
+              placeholder="Informe a descrição da tarefa..."
+              value="<%= row.descricao %>"
+              required
+            >
+          </div>
+          <div class="mb-1 row">
+            <div class="col">
+              <label
+                for="dataCadastro"
+                class="pl-1 col-form-label col-form-label-sm"
+                >Data de Cadastro:</label
+              >
+              <input
+                type="datetime"
+                step="1"
+                name="dataCadastro"
+                class="form-control form-control-md "
+                value="<%= row.dataCadastro %>"
+                disabled
+              />
+            </div>
+            <div class="col">
+              <label
+                for="dataFinalizado"
+                class="pl-1 col-form-label col-form-label-sm "
+                >Data de Finalização:</label
+              >
+              <input
+                type="datetime"
+                step="1"
+                name="dataFinalizado"
+                class="form-control form-control-md disabled"
+                value="<%= row.dataFinalizado %>"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="mb-3 mt-3 d-grid">
+            <input
+              type="submit"
+              name="submit"
+              value="Gravar"
+              class="btn btn-primary btn-md"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% }) } %>
+<%- include('../footer') %>

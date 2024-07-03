@@ -95,10 +95,6 @@ class tarefaController{
       )
       .catch((error) => res.status(400).send(error.message));  
   }
-  
-  viewHomePage(req, res) {
-    return res.status(200).render("./index", { title: "Página Inicial"});
-  }
 
   create(req, res) {
     const newtarefa = req.body;
