@@ -1,0 +1,13 @@
+SELECT 
+  t.id,
+  t.nome,
+  t.descricao,
+  p.nome AS projeto_nome,
+  m.nome AS membro_nome
+FROM 
+  tarefas t
+  INNER JOIN projetos p ON t.projeto_id = p.id
+  INNER JOIN membro_tarefa mt ON t.id = mt.tarefa_id
+  INNER JOIN membros m ON mt.membro_id = m.id
+WHERE 
+  t.projeto_id = [ID_DO_PROJETO_DESEJADO];
