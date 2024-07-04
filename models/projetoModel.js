@@ -17,24 +17,24 @@ class projetoModel {
 
   apiReadList() {
     const sql =
-      "SELECT t.descricao,s.descricao,t.dataCadastro, t.dataFinalizado FROM projetos t INNER JOIN status s on (s.id = t.status_id)";
+      "SELECT t.descricao,s.descricao,t.start_date, t.end_date FROM projetos t INNER JOIN status s on (s.id = t.status_id)";
     return this.executeSQL(sql);
   }
 
   apiRead(id) {
     const sql =
-      "SELECT t.descricao,s.descricao,t.dataCadastro, t.dataFinalizado FROM projetos t INNER JOIN status s on (s.id = t.status_id) WHERE id = ?";
+      "SELECT t.descricao,s.descricao,t.start_date, t.end_date FROM projetos t INNER JOIN status s on (s.id = t.status_id) WHERE id = ?";
     return this.executeSQL(sql, id);
   }
 
   apiCreate(newprojeto) {
     const sql =
-      "INSERT INTO projetos (id, descricao, membro_id, dataCadastro) VALUES (?,?,1,?,CURRENT_DATE)";
+      "INSERT INTO projetos (id, descricao, membro_id, start_date) VALUES (?,?,1,?,CURRENT_DATE)";
     const values = [
       newprojeto.id,
       newprojeto.descricao,
       newprojeto.membro_id,
-      newprojeto.datacadastro,
+      newprojeto.start_date,
     ];
     return this.executeSQL(sql, values);
   }
@@ -57,10 +57,10 @@ class projetoModel {
     const sql = `
         SELECT 
             p.id, 
-            p.nome,
+            p.name,
             p.descricao,  
-            DATE_FORMAT(p.dataCadastro, '%d/%m/%Y') AS dataCadastro, 
-            DATE_FORMAT(p.dataFinalizado, '%d/%m/%Y') AS dataFinalizado 
+            DATE_FORMAT(p.start_date, '%d/%m/%Y') AS start_date, 
+            DATE_FORMAT(p.end_date, '%d/%m/%Y') AS end_date 
         FROM 
             projetos p 
         
@@ -70,7 +70,7 @@ class projetoModel {
 
   read(id) {
     const sql =
-      "SELECT id, descricao, status_id, DATE_FORMAT(dataCadastro, '%d/%m/%Y') as dataCadastro, DATE_FORMAT(dataFinalizado, '%d/%m/%Y') as dataFinalizado FROM projetos WHERE id = ?";
+      "SELECT id, descricao, DATE_FORMAT(start_date, '%d/%m/%Y') as start_date, DATE_FORMAT(end_date, '%d/%m/%Y') as end_date FROM projetos WHERE id = ?";
     return this.executeSQL(sql, [id]);
   }
 
@@ -78,7 +78,7 @@ class projetoModel {
     const sql = `
         SELECT 
           e.id,
-          e.nome
+          e.name
         FROM 
           equipes e
           LEFT JOIN projetos p ON e.id = p.id
@@ -90,56 +90,29 @@ class projetoModel {
 
   
   create(newprojeto) {
-    return new Promise((resolve, reject) => {
-      this.executeSQL('START TRANSACTION')
-        .then(() => {
-          const sql1 =
-            `INSERT INTO projetos (id, nome, descricao, dataCadastro) VALUES (?, ?, ?, CURRENT_DATE);`;
-          const values1 = [
-            newprojeto.id,
-            newprojeto.nome,
-            newprojeto.descricao,
-          ];
-  
-          return this.executeSQL(sql1, values1);
-        })
-        .then(() => {
-          const sql2 =
-            `INSERT INTO equipes (projeto_id) VALUES (?);`;
-          const values2 = [
-            newprojeto.equipe.id,
-          ];
-  
-          return this.executeSQL(sql2, values2);
-        })
-        .then(() => {
-          return this.executeSQL('COMMIT');
-        })
-        .then((results) => {
-          resolve(results);
-        })
-        .catch((error) => {
-          this.executeSQL('ROLLBACK')
-            .then(() => {
-              reject(error);
-            });
-        });
-    });
-  }
+    const sql1 =
+      `INSERT INTO projetos (id, name, descricao, start_date) VALUES (?, ?, ?, CURRENT_DATE);`;
+    const values1 = [
+      newprojeto.id,
+      newprojeto.nome,
+      newprojeto.descricao,
+    ]
+    return this.executeSQL(sql1, values1)
+    };
 
   update(updatedprojeto, id) {
     let sql = ''; 
     let values = ''; 
     console.log(updatedprojeto.status,updatedprojeto, this.getCurrentDateTime )
     if(updatedprojeto.status == '4'){
-      sql = "UPDATE projetos SET descricao = ?, status_id = ?, dataFinalizado = ? WHERE id = ?"; 
+      sql = "UPDATE projetos SET descricao = ?, status_id = ?, end_date = ? WHERE id = ?"; 
       values = [updatedprojeto.descricao, updatedprojeto.status, this.getCurrentDateTime(), id];
-    }else if(updatedprojeto.dataFinalizado==''|| updatedprojeto.dataFinalizado== null ){
-      sql = "UPDATE projetos SET descricao = ?, status_id = ?,dataFinalizado = ? WHERE id = ?"; 
+    }else if(updatedprojeto.end_date==''|| updatedprojeto.end_date== null ){
+      sql = "UPDATE projetos SET descricao = ?, status_id = ?,end_date = ? WHERE id = ?"; 
       values = [updatedprojeto.descricao, updatedprojeto.status,null, id];
     }else{
-      sql = "UPDATE projetos SET descricao = ?, status_id = ?, dataFinalizado = ? WHERE id = ?"; 
-      values = [updatedprojeto.descricao, updatedprojeto.status, updatedprojeto.dataFinalizado, id];
+      sql = "UPDATE projetos SET descricao = ?, status_id = ?, end_date = ? WHERE id = ?"; 
+      values = [updatedprojeto.descricao, updatedprojeto.status, updatedprojeto.end_date, id];
     }
     return this.executeSQL(sql, values); 
   }
@@ -154,8 +127,8 @@ class projetoModel {
             t.id, 
             t.descricao AS descricao, 
             s.descricao AS status, 
-            DATE_FORMAT(t.dataCadastro, '%d/%m/%Y') AS dataCadastro, 
-            DATE_FORMAT(t.dataFinalizado, '%d/%m/%Y') AS dataFinalizado 
+            DATE_FORMAT(t.start_date, '%d/%m/%Y') AS start_date, 
+            DATE_FORMAT(t.end_date, '%d/%m/%Y') AS end_date 
         FROM 
             projetos t 
         INNER JOIN status s ON s.id = t.status_id
@@ -163,8 +136,8 @@ class projetoModel {
             t.id = ? OR                                                                                 
             t.descricao LIKE ? OR 
             s.descricao LIKE ? OR 
-            DATE_FORMAT(t.dataCadastro, '%d/%m/%Y') LIKE ? OR 
-            DATE_FORMAT(t.dataFinalizado, '%d/%m/%Y') LIKE ?
+            DATE_FORMAT(t.start_date, '%d/%m/%Y') LIKE ? OR 
+            DATE_FORMAT(t.end_date, '%d/%m/%Y') LIKE ?
     `;
     return this.executeSQL(sql, [
       pesquisa,

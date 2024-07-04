@@ -35,11 +35,11 @@ class helpDeskDatabase {
         }
         console.log("Banco de dados selecionado com sucesso..."); 
         this.createTableStatus();
-        this.createTableProjeto(); 
+        this.createTableUsers();  
         this.createTableEquipe();
-        this.createTableMembro();  
+        this.createTableProjeto(); 
         this.createTableTarefa(); 
-        this.createTableMemTaf();
+        this.createTableUserTeam();
         this.createInsertStatus();
     });
   });
@@ -64,13 +64,16 @@ class helpDeskDatabase {
   }
   createTableProjeto() {
     const sql = `
-      CREATE TABLE IF NOT EXISTS projetos(
-        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key', 
-        nome VARCHAR(50) NOT NULL DEFAULT 'Sem Nome',
-        descricao VARCHAR(200) NOT NULL,
-        dataCadastro DATETIME COMMENT 'Data de inclusão',
-        dataFinalizado DATETIME COMMENT 'Data da Finalização'
-      ) COMMENT 'Tabela Projeto que é referencia para outras tabelas';
+    create table projetos (
+      id int auto_increment primary key,
+        name varchar(200) not null,
+        descricao text,
+        start_date date,
+        end_date date,
+        created_by int,
+        FOREIGN KEY (created_by) REFERENCES users(id),
+        created_at timestamp default current_timestamp
+    );
       `;
 
     this.connection.query(sql, (error) => {
@@ -84,15 +87,10 @@ class helpDeskDatabase {
   }
   createTableEquipe() {
     const sql = `
-      CREATE TABLE IF NOT EXISTS equipes (
-          id int NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key',          
-          nome VARCHAR(50) NOT NULL,
-          descricao VARCHAR(200) NOT NULL,
-          projeto_id INT,
-          FOREIGN KEY (projeto_id) REFERENCES projetos(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE
-      );
+    create table equipes (
+      id int auto_increment primary key,
+        name varchar(200) not null
+    );
       `;
 
     this.connection.query(sql, (error) => {
@@ -104,50 +102,43 @@ class helpDeskDatabase {
       console.log("Tabela equipes criada com sucesso..."); 
     });
   }
-  createTableMembro() {
+  createTableUsers() {
     const sql = `
-      CREATE TABLE IF NOT EXISTS membros (
-          id int NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key',
-          nome VARCHAR(50) NOT NULL,
-          email VARCHAR(100) NOT NULL,
-          senha VARCHAR(255) NOT NULL,
-          equipe_id INT,
-          FOREIGN KEY (equipe_id) REFERENCES equipes(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE
-      );
+    create table users (
+      id int auto_increment primary key,
+        name varchar(200) not null,
+        email varchar(100) not null unique,
+        password varchar(255) not null,
+        role enum('admin', 'member') default 'member',
+        created_at timestamp default current_timestamp
+    );    
       `;
 
     this.connection.query(sql, (error) => {
       if (error) {
-        console.log("Ocorreu um erro ao criar a tabela membros..."); 
+        console.log("Ocorreu um erro ao criar a tabela Usuários..."); 
         console.log(error.message); 
         return;
       }
-      console.log("Tabela membros criada com sucesso..."); 
+      console.log("Tabela Usuários criada com sucesso..."); 
     });
   }
 
   createTableTarefa() {
     const sql = `
-      CREATE TABLE IF NOT EXISTS tarefas(  
-          id INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key',
-          projeto_id INT,
-          descricao VARCHAR(255),
-          status_id INT,
-          membro_id INT,
-          dataCadastro DATETIME COMMENT 'Data de inclusão',
-          dataFinalizado DATETIME COMMENT 'Data da Finalização',
-          FOREIGN KEY (membro_id) REFERENCES membros(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE,
-          FOREIGN KEY (status_id) REFERENCES status(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE,
-          FOREIGN KEY (projeto_id) REFERENCES projetos(id)
-                    ON DELETE CASCADE
-                    ON UPDATE CASCADE
-      ) COMMENT 'Tabela de tarefas';
+    create table tarefas (
+      id int auto_increment primary key,
+        title varchar(200) not null,
+        description text,
+        start_date date,
+        end_date date,
+        priority enum('low', 'medium', 'high') default 'medium',
+        project_id int,
+        assigned_to int,
+        FOREIGN KEY (project_id) REFERENCES projetos(id),
+        FOREIGN KEY (assigned_to) REFERENCES users(id),
+        created_at timestamp default current_timestamp
+    );
       `;
 
     this.connection.query(sql, (error) => {
@@ -159,28 +150,26 @@ class helpDeskDatabase {
       console.log("Tabela tarefa criada com sucesso..."); 
     });
   }
-  createTableMemTaf() {
+  createTableUserTeam() {
     const sql = `  
-      CREATE TABLE IF NOT EXISTS membro_tarefa (
-          membro_id INT,
-          tarefa_id INT,
-          PRIMARY KEY (membro_id, tarefa_id),
-          FOREIGN KEY (membro_id) REFERENCES membros(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE,
-          FOREIGN KEY (tarefa_id) REFERENCES tarefas(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE
-      );
+    create table user_team (
+      id int auto_increment primary key,
+        start_date date,
+        end_date date,
+      team_id int,
+        member_id int,
+        FOREIGN KEY (team_id) REFERENCES equipes(id),
+        FOREIGN KEY (member_id) REFERENCES users(id)
+    );
       `;
 
     this.connection.query(sql, (error) => {
       if (error) {
-        console.log("Ocorreu um erro ao criar a tabela relacional membro_tarefa..."); 
+        console.log("Ocorreu um erro ao criar a tabela relacional user_team ..."); 
         console.log(error.message); 
         return;
       }
-      console.log("Tabela relacional membro_tarefa criada com sucesso..."); 
+      console.log("Tabela relacional user_team  criada com sucesso..."); 
     });
   }
   createInsertStatus() {

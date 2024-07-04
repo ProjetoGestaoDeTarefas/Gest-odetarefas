@@ -27,22 +27,22 @@
                                        </tr>
                                    </thread>
                                    <tbody>
-                                    <% if ( projlist !='' ) { projlist.forEach((row, index)=> { %>
+                                    <% if ( projeto !='' ) { projeto.forEach((row, index)=> { %>
                                         <tr class="align-middle">
                                           <td>
                                             <%= row.id %>
                                           </td>
                                           <td>
-                                            <%= row.nome %>
+                                            <%= row.name %>
                                           </td>
                                           <td>
                                             <%= row.descricao %>
                                           </td>
                                           <td>
-                                            <%= row.dataCadastro %>
+                                            <%= row.start_date %>
                                           </td>
                                           <td>
-                                            <%= row.dataFinalizado %>
+                                            <%= row.end_date %>
                                           </td>
                                           <td>
                                               <a href="projeto/update/<%= row.id %>" class="text-success ml-2">

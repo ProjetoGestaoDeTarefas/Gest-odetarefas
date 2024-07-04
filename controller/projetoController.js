@@ -77,8 +77,8 @@ class projetoController{
     return ProjetoList
       .then((result) =>
         result.length == 0
-          ? res.status(404).render("./Projeto/Projeto_read", { title: "Listar Projeto", projlist: result, search: '' })
-          : res.status(200).render("./Projeto/Projeto_read", { title: "Listar Projeto", Projlist: result, search: '' })
+          ? res.status(404).render("./Projeto/Projeto_read", { title: "Listar Projeto", projeto: result, search: '' })
+          : res.status(200).render("./Projeto/Projeto_read", { title: "Listar Projeto", projeto: result, search: '' })
       )
       .catch((error) => res.status(400).send(error.message));  
   }
@@ -110,7 +110,7 @@ class projetoController{
             icone: 'fa-check',
             modalTitle: 'Cadastro Inserido',
             message: `Projeto cadastrado com sucesso!`,
-            redirectUrl: '/Projeto/create'
+            redirectUrl: '/projeto'
         });
     })
       .catch((error) => res.status(400).send(error.message));    
