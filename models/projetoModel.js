@@ -70,7 +70,7 @@ class projetoModel {
 
   read(id) {
     const sql =
-      "SELECT id, descricao, DATE_FORMAT(start_date, '%d/%m/%Y') as start_date, DATE_FORMAT(end_date, '%d/%m/%Y') as end_date FROM projetos WHERE id = ?";
+      "SELECT id, name, descricao, DATE_FORMAT(start_date, '%d/%m/%Y') as start_date, DATE_FORMAT(end_date, '%d/%m/%Y') as end_date FROM projetos WHERE id = ?";
     return this.executeSQL(sql, [id]);
   }
 
