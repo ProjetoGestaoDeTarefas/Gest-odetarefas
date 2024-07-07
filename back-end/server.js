@@ -33,6 +33,19 @@ app.post('/login', (req, res) => {
         res.status(200).send({ auth: true, token });
     });
 });
+const mysql = require('mysql2');
+
+app.get('/api/projetos', (req, res) => {
+  // Faz a consulta ao banco de dados
+  conn.query('SELECT * FROM projetos', (error, results) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Erro ao buscar dados' });
+    } else {
+      res.status(201).json(results);
+    }
+  });
+});
 
 
 app.get('/api', (req, res) => {
