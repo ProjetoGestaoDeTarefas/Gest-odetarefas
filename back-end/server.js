@@ -38,7 +38,11 @@ app.post('/login', (req, res) => {
 app.get('/api', (req, res) => {
     res.json({ message: 'Olá do servidor!' });
   });
-  
+  app.post('/api', (req, res) => {
+    const project = req.body;
+    // faça algo com os dados do projeto aqui
+    res.json({ message: `Projeto recebido: ${project.name}` });
+});
   app.get('/api/users', (req, res) => {
     res.json({ users: ['Ana', 'Carlos', 'Pedro'] });
   });
