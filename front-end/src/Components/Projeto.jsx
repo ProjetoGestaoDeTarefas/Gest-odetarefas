@@ -26,8 +26,28 @@ const Projeto = () => {
 
   const [teams, setTeams] = useState([]);
   const [members, setMembers] = useState([]);
+  const [message, setMessage] = useState('');
   const [teamName, setTeamName] = useState('');
   const [memberName, setMemberName] = useState('');
+  
+  
+  
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    fetch('/api/projeto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(project),
+    })
+    .then(response => response.json())
+    .then(data => setMessage(data.message));
+};
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,8 +84,8 @@ const Projeto = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Registro de Projeto
       </Typography>
-      <Box component="form" sx={{ mt: 2 }}>
-        <Grid container spacing={2}>
+      <Box component="form" sx={{ mt: 2 }} onSubmit={handleSubmit}>
+        <Grid container spacing={2} >
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -191,7 +211,7 @@ const Projeto = () => {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
               Registrar Projeto
             </Button>
           </Grid>
