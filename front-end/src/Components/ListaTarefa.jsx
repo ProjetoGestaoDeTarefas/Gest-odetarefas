@@ -12,11 +12,23 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 const ListaTarefa = () => {
   const [tarefas, setTarefas] = useState([]);
   const [search, setSearch] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
+  const [currentAction, setCurrentAction] = useState('');
+  const [currentTaskId, setCurrentTaskId] = useState(null);
 
   useEffect(() => {
     const fetchTarefas = async () => {
@@ -40,9 +52,47 @@ const ListaTarefa = () => {
     setSearch(e.target.value);
   };
 
-  const filteredTarefas = tarefas.filter(tarefa =>
+  const filteredTarefas = tarefas.filter((tarefa) =>
     tarefa.descricao.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleOpenDialog = (action, taskId) => {
+    setCurrentAction(action);
+    setCurrentTaskId(taskId);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setCurrentAction('');
+    setCurrentTaskId(null);
+  };
+
+  const handleConfirmAction = async () => {
+    if (!currentTaskId || !currentAction) return;
+
+    try {
+      const response = await fetch(`/api/tarefa/${currentTaskId}`, {
+        method: currentAction === 'delete' ? 'DELETE' : 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: currentAction === 'archive' ? JSON.stringify({ status: 'Archived' }) : null,
+      });
+
+      if (response.ok) {
+        setTarefas((prevTarefas) =>
+          prevTarefas.filter((tarefa) => tarefa.id !== currentTaskId)
+        );
+      } else {
+        console.error('Erro ao realizar ação:', response.status);
+      }
+    } catch (error) {
+      console.error('Erro ao realizar ação:', error);
+    }
+
+    handleCloseDialog();
+  };
 
   return (
     <Container maxWidth="xl">
@@ -50,29 +100,32 @@ const ListaTarefa = () => {
         Listagem de Tarefas
       </Typography>
 
-      <form className="d-flex mb-3" onSubmit={(e) => e.preventDefault()}>
-        <TextField
-          className="me-2"
-          variant="outlined"
-          type="text"
-          name="search"
-          placeholder="Pesquisa..."
-          value={search}
-          onChange={handleSearchChange}
-          style={{ width: '50%'}} 
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSearchChange} 
-          style={{ minWidth: '130px' }} 
-        >
-          <i className="fas fa-search me-1"></i> Pesquisar
-        </Button>
-      </form>
+      <Grid container spacing={1} alignItems="center">
+        <Grid item xs={7}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            type="text"
+            name="search"
+            placeholder="Pesquisa..."
+            value={search}
+            onChange={handleSearchChange}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={handleSearchChange}
+          >
+            Pesquisar
+          </Button>
+        </Grid>
+      </Grid>
 
       {/* Tabela de Tarefas */}
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{ marginTop: '20px' }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -81,8 +134,8 @@ const ListaTarefa = () => {
               <TableCell>Status</TableCell>
               <TableCell>Data de Início</TableCell>
               <TableCell>Data de Término</TableCell>
-              <TableCell>Editar</TableCell>
-              <TableCell>Excluir</TableCell>
+              <TableCell>Ações</TableCell>
+              <TableCell>Arquivar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -94,20 +147,53 @@ const ListaTarefa = () => {
                 <TableCell>{row.dataCadastro}</TableCell>
                 <TableCell>{row.dataFinalizado}</TableCell>
                 <TableCell>
-                  <a href={`tarefa/update/${row.id}`} className="text-success ml-2">
-                    <i className="fas fa-edit fa-lg mx-1"></i>
-                  </a>
-                </TableCell>
-                <TableCell>
-                  <a href={`tarefa/delete/${row.id}`} className="text-danger ml-2">
-                    <i className="fas fa-trash-alt fa-lg mx-1"></i>
-                  </a>
+                  <IconButton
+                    color="primary"
+                    onClick={() => window.location.href = `tarefa/update/${row.id}`}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    color="secondary"
+                    onClick={() => handleOpenDialog('delete', row.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton
+                    color="default"
+                    onClick={() => handleOpenDialog('archive', row.id)}
+                  >
+                    <ArchiveIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirmar Ação</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {currentAction === 'delete' && 'Tem certeza que deseja excluir esta tarefa?'}
+            {currentAction === 'archive' && 'Tem certeza que deseja arquivar esta tarefa?'}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirmAction} color="primary" autoFocus>
+            Confirmar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

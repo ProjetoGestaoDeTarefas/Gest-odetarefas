@@ -70,7 +70,7 @@ function Projeto() {
       },
       body: JSON.stringify(project),
     })
-      .then((response) => response.json())
+    .then((response) => response.json())
       .then((data) => {
         setMessage(data.message);
         // Redireciona para a página de lista de projetos após o registro
@@ -78,6 +78,8 @@ function Projeto() {
       })
       .catch(error => console.error('Erro ao registrar projeto:', error));
   };
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
