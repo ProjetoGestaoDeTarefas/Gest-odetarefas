@@ -23,6 +23,19 @@ const Equipe = () => {
   const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState('');
 
+
+  const handleSubmit = (event) => {
+    fetch('/api/team', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(teamCreate),
+    })
+    .then(response => response.json())
+    .then(data => setMessage(data.message));
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTask((prevTask) => ({
@@ -108,7 +121,7 @@ const Equipe = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onSubmit={handleSubmit}>
               Registrar EQUIPE
             </Button>
           </Grid>   

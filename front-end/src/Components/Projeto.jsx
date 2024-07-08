@@ -84,7 +84,7 @@ const Projeto = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Registro de Projeto
       </Typography>
-      <Box component="form" sx={{ mt: 2 }} onSubmit={handleSubmit}>
+      <Box component="form" sx={{ mt: 2 }}>
         <Grid container spacing={2} >
           <Grid item xs={12}>
             <TextField
@@ -178,24 +178,6 @@ const Projeto = () => {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6" gutterBottom>
-              Membros
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={10}>
-                <TextField
-                  fullWidth
-                  label="Nome do Membro"
-                  value={memberName}
-                  onChange={(e) => setMemberName(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <IconButton color="primary" onClick={handleAddMember}>
-                  <AddIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
             <Box mt={2}>
               {members.map((member, index) => (
                 <Box key={index} display="flex" alignItems="center" mb={1}>

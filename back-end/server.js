@@ -1,8 +1,10 @@
 // server.js
 const express = require('express');
 const app = express();
-const conn = require('./db/index.js');
-conn();
+const router = require("./routes/index.js");
+const conn = require('./db/conn.js');
+const db = require('./db/index.js');
+db();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const port = 3000;
@@ -68,9 +70,6 @@ app.get('/api', (req, res) => {
 //     console.log('Server running on port 3000');
 // });
 
-
-
-const router = require("./routes/index.js");
 
 router(app, express);
 app.listen(
