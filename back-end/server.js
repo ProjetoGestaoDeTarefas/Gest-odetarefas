@@ -5,6 +5,7 @@ const conn = require('./db/index.js');
 conn();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const port = 3000;
 
 app.use(express.json());
 
@@ -73,7 +74,7 @@ const router = require("./routes/index.js");
 
 router(app, express);
 app.listen(
-    3000,
+    port,
     function (error) {
     if (error){
         console.log("Ocorreu um erro ao rodar o servidor!");
