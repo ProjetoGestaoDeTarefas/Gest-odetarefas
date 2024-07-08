@@ -8,21 +8,26 @@ import Tarefa from './Components/Tarefa';
 import Equipe from './Components/Equipe';
 import ListaTarefa from './Components/ListaTarefa';
 import ListaProjeto from './Components/ListaProjeto';
+import './Style/StyleGlobal.css';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/projeto" element={<Projeto />} />
-        <Route path="/tarefa" element={<Tarefa />} />
-        <Route path="/equipe" element={<Equipe />} />
-        <Route path="/listaTarefa" element={<ListaTarefa />} />
-        <Route path="/listaProjeto" element={<ListaProjeto />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <div id="root">
+      <BrowserRouter>
+        <Navbar />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projeto" element={<Projeto />} />
+            <Route path="/tarefa" element={<Tarefa />} />
+            <Route path="/equipe" element={<Equipe />} />
+            <Route path="/listaTarefa" element={<ListaTarefa />} />
+            <Route path="/listaProjeto" element={<ListaProjeto />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </div>
   );
 };
 
