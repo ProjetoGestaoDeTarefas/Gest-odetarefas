@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
 
 const Tarefa = () => {
   const [task, setTask] = useState({
@@ -22,10 +23,11 @@ const Tarefa = () => {
     startDate: '',
     endDate: '',
     priority: '',
+    members: [],
   });
 
-  const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,13 +39,40 @@ const Tarefa = () => {
 
   const handleAddMember = () => {
     if (memberName) {
-      setMembers((prevMembers) => [...prevMembers, memberName]);
+      setTask((prevTask) => ({
+        ...prevTask,
+        members: [...prevTask.members, memberName],
+      }));
       setMemberName('');
     }
   };
 
   const handleRemoveMember = (index) => {
-    setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index));
+    setTask((prevTask) => ({
+      ...prevTask,
+      members: prevTask.members.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/tarefa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(task),
+      });
+
+      if (response.ok) {
+        navigate('/listaTarefa');
+      } else {
+        alert('Falha ao registrar a tarefa');
+      }
+    } catch (error) {
+      console.error('Erro ao registrar a tarefa:', error);
+      alert('Erro ao registrar a tarefa');
+    }
   };
 
   return (
@@ -130,7 +159,7 @@ const Tarefa = () => {
                   <AddIcon />
                 </IconButton>
               </Grid>
-              {members.map((member, index) => (
+              {task.members.map((member, index) => (
                 <Grid key={index} item xs={12}>
                   <Box display="flex" alignItems="center">
                     <Typography variant="body1">{member}</Typography>
@@ -146,7 +175,7 @@ const Tarefa = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
               Registrar Tarefa
             </Button>
           </Grid>

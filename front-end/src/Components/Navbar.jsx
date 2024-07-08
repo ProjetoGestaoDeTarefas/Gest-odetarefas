@@ -157,8 +157,8 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Toolbar sx={{ left: 0, right: 0 }}>
           <IconButton
             size="large"
             edge="start"
@@ -195,6 +195,12 @@ export default function Navbar() {
                 </li>
                 <li style={{ marginRight: '20px' }}>
                   <Link to="/equipe" style={{ textDecoration: 'none', color: 'white' }}>Equipe</Link>
+                </li>
+                <li style={{ marginRight: '20px' }}>
+                  <Link to="/listaTarefa" style={{ textDecoration: 'none', color: 'white' }}>Lista tarefa</Link>
+                </li>
+                <li style={{ marginRight: '20px' }}>
+                  <Link to="/listaProjeto" style={{ textDecoration: 'none', color: 'white' }}>Lista projeto</Link>
                 </li>
               </ul>
             </nav>
@@ -243,4 +249,3 @@ export default function Navbar() {
     </Box>
   );
 }
-//1
