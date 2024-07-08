@@ -15,10 +15,35 @@ class projetoController {
     return retorno
       .then((result) =>
         result.length == 0
-          ? res.status(404).send("Nenhum projeto foi formada ainda!")
+          ? res.status(500).send("Nenhum projeto no Banco de Dados!")
           : res.status(200).json(result)
       )
       .catch((error) => res.status(400).json(error.message));
   }
+
+  deleteProject(req, res) {
+    const { id } = req.params;
+    const retorno = projetoModel.apiDelete(id);
+    return retorno
+      .then((result) =>
+        res.status(200).send("Projeto deletado com sucesso!")
+      )
+      .catch((error) => res.status(400).json(error.message));
+  }
+
+  apiUpdate(req, res) {
+    const { id } = req.params;
+    const reqBody = req.body;
+      
+    const retorno = projetoModel.apiUpdate(reqBody, id);
+    return retorno
+      .then((result) =>
+        res.status(200).send("Projeto atualizado com sucesso!")
+      )
+      .catch((error) => res.status(400).json(error.message));
+
+  }
+
+
 }
 module.exports = new projetoController();

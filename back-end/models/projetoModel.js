@@ -26,17 +26,27 @@ class projetoModel {
   apiList() {
     const sql = `
         SELECT 
-          p.id,
-          p.name,
-          p.descricao,
-          p.start_date,
-          p.end_date,
+          id,
+          name,
+          descricao,
+          start_date,
+          end_date
         FROM 
-          projetos p
+          projetos
     `;
     return this.executeSQL(sql);
   }
   
+  apiDelete(id) {
+    const sql = "DELETE FROM projetos WHERE id = ?";
+    return this.executeSQL(sql, id);
+  }
+
+  apiUpdate(updatedtarefa, id) {
+    const sql = "UPDATE tarefas SET ? WHERE id = ?";
+    return this.executeSQL(sql, [updatedtarefa, id]);
+  }
+
 }
 module.exports = new projetoModel();
 
