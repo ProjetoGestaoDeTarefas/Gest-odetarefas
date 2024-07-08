@@ -7,6 +7,7 @@ import Projeto from './Components/Projeto';
 import Tarefa from './Components/Tarefa';
 import Equipe from './Components/Equipe';
 import ListaTarefa from './Components/ListaTarefa';
+import ListaProjeto from './Components/ListaProjeto';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/tarefa" element={<Tarefa />} />
         <Route path="/equipe" element={<Equipe />} />
         <Route path="/listaTarefa" element={<ListaTarefa />} />
+        <Route path="/listaProjeto" element={<ListaProjeto />} />
       </Routes>
       <Footer />
     </BrowserRouter>
