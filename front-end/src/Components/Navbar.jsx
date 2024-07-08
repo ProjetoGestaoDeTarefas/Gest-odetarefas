@@ -196,6 +196,9 @@ export default function Navbar() {
                 <li style={{ marginRight: '20px' }}>
                   <Link to="/equipe" style={{ textDecoration: 'none', color: 'white' }}>Equipe</Link>
                 </li>
+                <li style={{ marginRight: '20px' }}>
+                  <Link to="/listaTarefa" style={{ textDecoration: 'none', color: 'white' }}>Lista tarefa</Link>
+                </li>
               </ul>
             </nav>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
