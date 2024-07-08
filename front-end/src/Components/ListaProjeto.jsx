@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
   TextField,
   Button,
-  Grid,
   Table,
   TableBody,
   TableCell,
@@ -16,17 +15,25 @@ import {
 
 const ListaProjeto = () => {
   const [projetos, setProjetos] = useState([]);
-  const [search, setSearch] = useState('');
+  const [pesquisa, setPesquisa] = useState('');
 
   useEffect(() => {
     const fetchProjetos = async () => {
       try {
-        const response = await fetch('/api/projeto');
-        if (response.ok) {
-          const data = await response.json();
-          setProjetos(data);
+        const response = await fetch('/api/projeto'); // Endpoint para buscar os projetos no banco de dados
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`A resposta da rede não foi bem-sucedida: ${response.status} ${response.statusText} - ${errorText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Dados buscados:', data);
+        
+        if (Array.isArray(data)) {
+          setProjetos(data); // Ajuste conforme a estrutura dos dados retornados
         } else {
-          console.error('Erro ao buscar projetos:', response.status);
+          console.error('Esperado um array, mas obteve:', data);
         }
       } catch (error) {
         console.error('Erro ao buscar projetos:', error);
@@ -36,12 +43,12 @@ const ListaProjeto = () => {
     fetchProjetos();
   }, []);
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
+  const handlePesquisaChange = (e) => {
+    setPesquisa(e.target.value);
   };
 
-  const filteredProjetos = projetos.filter(projeto =>
-    projeto.nome.toLowerCase().includes(search.toLowerCase())
+  const projetosFiltrados = projetos.filter(projeto =>
+    projeto.nome && projeto.nome.toLowerCase().includes(pesquisa.toLowerCase())
   );
 
   return (
@@ -56,16 +63,16 @@ const ListaProjeto = () => {
           className="me-2"
           variant="outlined"
           type="text"
-          name="search"
+          name="pesquisa"
           placeholder="Pesquisa..."
-          value={search}
-          onChange={handleSearchChange}
+          value={pesquisa}
+          onChange={handlePesquisaChange}
           style={{ width: '50%' }}
         />
         <Button
           variant="contained"
           color="primary"
-          onClick={handleSearchChange}
+          onClick={handlePesquisaChange}
           style={{ minWidth: '130px' }}
         >
           <i className="fas fa-search me-1"></i> Pesquisar
@@ -88,7 +95,7 @@ const ListaProjeto = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProjetos.map((row) => (
+            {projetosFiltrados.map((row) => (
               <TableRow key={row.id} className="align-middle">
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.nome}</TableCell>

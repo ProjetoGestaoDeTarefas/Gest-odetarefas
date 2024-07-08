@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 
+// eslint-disable-next-line react/prop-types
 function Grouped({ onAddTeam }) {
   const [options, setOptions] = useState([]);
 
@@ -96,7 +97,7 @@ function Projeto() {
         // Adiciona as equipes ao estado do projeto
         setProject((prevProject) => ({
           ...prevProject,
-          teams: data.map(team => team.name), // Ajuste conforme a estrutura dos dados retornados
+          teams: data.map(equipe => equipe.name), // Ajuste conforme a estrutura dos dados retornados
         }));
       })
       .catch(error => console.error('Erro ao buscar equipes:', error));
@@ -108,7 +109,7 @@ function Projeto() {
         <Typography variant="h4" component="h1" gutterBottom>
           Registro de Projeto
         </Typography>
-        <Box component="form" sx={{ mt: 20, width: '100%' }} onSubmit={handleSubmit}>
+        <Box component="form" sx={{ mt: 8, width: '100%' }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
