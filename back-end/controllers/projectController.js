@@ -31,7 +31,7 @@ class projetoController {
       .catch((error) => res.status(400).json(error.message));
   }
 
-  apiUpdate(req, res) {
+  updateProject(req, res) {
     const { id } = req.params;
     const reqBody = req.body;
       
