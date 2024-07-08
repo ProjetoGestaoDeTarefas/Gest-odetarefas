@@ -24,10 +24,10 @@ class projetoModel {
   apiList() {
     const sql = `
         SELECT 
-          e.id,
-          e.name
+          id,
+          name
         FROM 
-          equipes e
+          equipes
     `;
     return this.executeSQL(sql);
   }

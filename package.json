@@ -3,9 +3,9 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-  "start": "concurrently \"npm run start:front\" \"npm run start:back\"",
-  "start:front": "cd front-end && npm run dev",
-  "start:back": "cd back-end && npm start"
+  "start": "concurrently \"npm run start:back\" \"npm run start:front\"",
+  "start:back": "cd back-end && npm start",
+  "start:front": "cd front-end && npm run dev"
 }
 
 }
