@@ -11,30 +11,26 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
+import { useNavigate } from 'react-router-dom';
 
 const ListaProjeto = () => {
   const [projetos, setProjetos] = useState([]);
   const [pesquisa, setPesquisa] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjetos = async () => {
       try {
-        const response = await fetch('/api/projeto'); // Endpoint para buscar os projetos no banco de dados
-        
+        const response = await fetch('/api/projeto');
         if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`A resposta da rede não foi bem-sucedida: ${response.status} ${response.statusText} - ${errorText}`);
+          throw new Error('Erro ao buscar projetos');
         }
-        
         const data = await response.json();
-        console.log('Dados buscados:', data);
-        
-        if (Array.isArray(data)) {
-          setProjetos(data); // Ajuste conforme a estrutura dos dados retornados
-        } else {
-          console.error('Esperado um array, mas obteve:', data);
-        }
+        setProjetos(data);
       } catch (error) {
         console.error('Erro ao buscar projetos:', error);
       }
@@ -48,8 +44,30 @@ const ListaProjeto = () => {
   };
 
   const projetosFiltrados = projetos.filter(projeto =>
-    projeto.nome && projeto.nome.toLowerCase().includes(pesquisa.toLowerCase())
+    projeto.name.toLowerCase().includes(pesquisa.toLowerCase())
   );
+
+  const handleEditarProjeto = (id) => {
+    // Navega para a página de edição do projeto com o ID fornecido
+    navigate(`/projeto/update/${id}`);
+  };
+
+  const handleExcluirProjeto = async (id) => {
+    try {
+      // Lógica para excluir o projeto com o ID fornecido
+      const response = await fetch(`/api/projeto/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Erro ao excluir projeto');
+      }
+      // Atualiza a lista de projetos após a exclusão
+      setProjetos(projetos.filter(projeto => projeto.id !== id));
+      console.log(`Projeto com ID ${id} excluído com sucesso`);
+    } catch (error) {
+      console.error('Erro ao excluir projeto:', error);
+    }
+  };
 
   return (
     <Container maxWidth="xl">
@@ -87,7 +105,6 @@ const ListaProjeto = () => {
               <TableCell>Código</TableCell>
               <TableCell>Nome do Projeto</TableCell>
               <TableCell>Descrição</TableCell>
-              <TableCell>Status</TableCell>
               <TableCell>Data de Início</TableCell>
               <TableCell>Data de Término</TableCell>
               <TableCell>Editar</TableCell>
@@ -98,20 +115,19 @@ const ListaProjeto = () => {
             {projetosFiltrados.map((row) => (
               <TableRow key={row.id} className="align-middle">
                 <TableCell>{row.id}</TableCell>
-                <TableCell>{row.nome}</TableCell>
+                <TableCell>{row.name}</TableCell>
                 <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{row.dataInicio}</TableCell>
-                <TableCell>{row.dataFim}</TableCell>
+                <TableCell>{row.start_date}</TableCell>
+                <TableCell>{row.end_date}</TableCell>
                 <TableCell>
-                  <a href={`projeto/update/${row.id}`} className="text-success ml-2">
-                    <i className="fas fa-edit fa-lg mx-1"></i>
-                  </a>
+                  <IconButton aria-label="Editar" onClick={() => handleEditarProjeto(row.id)}>
+                    <CreateIcon />
+                  </IconButton>
                 </TableCell>
                 <TableCell>
-                  <a href={`projeto/delete/${row.id}`} className="text-danger ml-2">
-                    <i className="fas fa-trash-alt fa-lg mx-1"></i>
-                  </a>
+                  <IconButton aria-label="Excluir" onClick={() => handleExcluirProjeto(row.id)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
