@@ -84,7 +84,7 @@ const Projeto = () => {
       <Typography variant="h4" component="h1" gutterBottom>
         Registro de Projeto
       </Typography>
-      <Box component="form" sx={{ mt: 2 }} onSubmit={handleSubmit}>
+      <Box component="form" sx={{ mt: 2 }}>
         <Grid container spacing={2} >
           <Grid item xs={12}>
             <TextField
