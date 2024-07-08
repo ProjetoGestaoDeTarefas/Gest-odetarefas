@@ -9,8 +9,8 @@ import Equipe from './Components/Equipe';
 import ListaTarefa from './Components/ListaTarefa';
 import ListaProjeto from './Components/ListaProjeto';
 import './Style/StyleGlobal.css';
-import JivoChatWidget from './JivoChatWidget';
-import GoogleCalendar from './GoogleCalendar';
+// import JivoChatWidget from './JivoChatWidget';
+// import GoogleCalendar from './GoogleCalendar';
 
 const App = () => {
   return (
@@ -26,8 +26,8 @@ const App = () => {
             <Route path="/listaTarefa" element={<ListaTarefa />} />
             <Route path="/listaProjeto" element={<ListaProjeto />} />
           </Routes>
-          <JivoChatWidget />
-          <GoogleCalendar />
+          {/* <JivoChatWidget />
+          <GoogleCalendar /> */}
         </div>
         <Footer />
       </BrowserRouter>
