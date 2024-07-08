@@ -1,7 +1,8 @@
 // server.js
 const express = require('express');
 const app = express();
-const conn = require('./db/conn');
+const conn = require('./db/index.js');
+conn();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 

@@ -85,7 +85,7 @@ useEffect(() => {
           <li key={user}>{user}</li>
         ))}
         {dados.map(dado => (
-        <li key={dado.id}>{dado.name}</li> // ajuste de acordo com a estrutura dos seus dados
+        <li key={dado.id}>{dado.name} {dado.descricao}</li> // ajuste de acordo com a estrutura dos seus dados
       ))}
       </ul>
       <Container maxWidth="md">
