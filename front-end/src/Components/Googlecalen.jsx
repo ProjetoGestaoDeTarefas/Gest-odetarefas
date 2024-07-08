@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { gapi } from 'gapi-script';
 
-const CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
-const API_KEY = 'YOUR_API_KEY';
+const CLIENT_ID = '1049313708260-d1u49e8j5ogl1uglhiiq0bqus9liq34c.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyDscTf8DLcOL0yLa03EQpFNxAePnayOJq4';
 const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const GoogleCalendar = () => {
