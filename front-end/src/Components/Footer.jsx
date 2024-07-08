@@ -14,6 +14,7 @@ const Footer = () => {
       zIndex: 1000,
     }}>
       <p style={{ color: 'white', margin: 0 }}>© 2024 Grupo 1. Todos os direitos reservados.</p>
+      <script src="//code.jivosite.com/widget/wQcVZIHWjm" async></script>
     </footer>
   );
 };
