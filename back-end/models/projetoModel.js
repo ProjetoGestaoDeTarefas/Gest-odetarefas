@@ -14,13 +14,30 @@ class projetoModel {
   /////////////////////////////////////////////////
 
   apiCreate(newprojeto) {
-    const sql = 'INSERT INTO projetos (name, descricao) VALUES (?, ?)';
+    const sql = 'INSERT INTO projetos (name, descricao, start_date, end_date) VALUES (?, ?, ?, ?)';
     const values = [
       newprojeto.name,
       newprojeto.description,
+      newprojeto.startDate,
+      newprojeto.endDate,
     ]
     return this.executeSQL(sql, values);
+  }
+  apiList() {
+    const sql = `
+        SELECT 
+          p.id,
+          p.name,
+          p.descricao,
+          p.start_date,
+          p.end_date,
+        FROM 
+          projetos p
+    `;
+    return this.executeSQL(sql);
   }
   
 }
 module.exports = new projetoModel();
+
+//          COUNT(t.projeto_id) as total_tarefas

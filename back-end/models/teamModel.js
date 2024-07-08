@@ -21,6 +21,17 @@ class projetoModel {
     ]
     return this.executeSQL(sql, values);
   }
+  apiList() {
+    const sql = `
+        SELECT 
+          e.id,
+          e.name
+        FROM 
+          equipes e
+    `;
+    return this.executeSQL(sql);
+  }
+
   
 }
 module.exports = new projetoModel();

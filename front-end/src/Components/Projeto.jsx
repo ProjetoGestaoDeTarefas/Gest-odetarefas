@@ -47,8 +47,6 @@ const Projeto = () => {
     .then(data => setMessage(data.message));
 };
 
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProject((prevProject) => ({
