@@ -8,9 +8,4 @@ const db = mysql.createConnection({
   database: "db_helpDesk"
 });
 
-db.connect(err => {
-    if (err) throw err;
-    console.log('MySQL Connected...');
-});
-
 module.exports = db;

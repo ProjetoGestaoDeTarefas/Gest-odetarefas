@@ -37,7 +37,6 @@ function Home() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
 
     fetch('/api', {
         method: 'POST',
@@ -48,6 +47,16 @@ function Home() {
     })
     .then(response => response.json())
     .then(data => setMessage(data.message));
+
+    fetch('/api/projeto', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(project),
+  })
+  .then(response => response.json())
+  .then(data => setMessage(data.message));
 };
 
 const [dados, setDados] = useState([]);
@@ -76,7 +85,7 @@ useEffect(() => {
           <li key={user}>{user}</li>
         ))}
         {dados.map(dado => (
-        <li key={dado.id}>{dado.name}</li> // ajuste de acordo com a estrutura dos seus dados
+        <li key={dado.id}>{dado.name} {dado.descricao}</li> // ajuste de acordo com a estrutura dos seus dados
       ))}
       </ul>
       <Container maxWidth="md">

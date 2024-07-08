@@ -1,9 +1,11 @@
 // server.js
 const express = require('express');
 const app = express();
-const conn = require('./db/conn');
+const conn = require('./db/index.js');
+conn();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const port = 3000;
 
 app.use(express.json());
 
@@ -47,7 +49,6 @@ app.get('/api/projetos', (req, res) => {
   });
 });
 
-
 app.get('/api', (req, res) => {
     res.json({ message: 'Olá do servidor!' });
   });
@@ -63,6 +64,23 @@ app.get('/api', (req, res) => {
 // Rotas de Gestão de Projetos, Tarefas e Membros
 // (A serem desenvolvidas conforme necessário)
 
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
+// app.listen(3000, () => {
+//     console.log('Server running on port 3000');
+// });
+
+
+
+const router = require("./routes/index.js");
+
+router(app, express);
+app.listen(
+    port,
+    function (error) {
+    if (error){
+        console.log("Ocorreu um erro ao rodar o servidor!");
+        return;
+    } else {
+        console.log("O servidor está rodando com sucesso!");
+    }
+    }
+);
