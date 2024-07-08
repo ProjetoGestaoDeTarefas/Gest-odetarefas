@@ -1,3 +1,8 @@
+Para iniciar o projeto digite:      npm start     na /Gest-odetarefas
+
+
+
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
