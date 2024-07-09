@@ -130,6 +130,7 @@ const ListaTarefa = () => {
           <TableHead>
             <TableRow>
               <TableCell>Código</TableCell>
+              <TableCell>Título</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Data de Início</TableCell>
@@ -142,10 +143,11 @@ const ListaTarefa = () => {
             {filteredTarefas.map((row) => (
               <TableRow key={row.id} className="align-middle">
                 <TableCell>{row.id}</TableCell>
-                <TableCell>{row.descricao}</TableCell>
-                <TableCell>{row.status}</TableCell>
-                <TableCell>{row.dataCadastro}</TableCell>
-                <TableCell>{row.dataFinalizado}</TableCell>
+                <TableCell>{row.title}</TableCell>
+                <TableCell>{row.description}</TableCell>
+                <TableCell>{row.priority}</TableCell>
+                <TableCell>{row.created_at}</TableCell>
+                <TableCell>{row.end_date}</TableCell>
                 <TableCell>
                   <IconButton
                     color="primary"
