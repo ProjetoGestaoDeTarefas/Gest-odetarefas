@@ -1,28 +1,29 @@
 const bcrypt = require('bcrypt');
+const UserModel = require("../models/UserModel");
 
 module.exports = class UserController{
 
     //Cadastrar usuário
     static async save(req, res){
         
-        const { nome, email, senha } = req.body;
+        const { name, email, password } = req.body;
 
         //Verifica se usuário com este e-mail já existe
-        const userExist = await User.findOne({where: {email: email}});
-
-        if(userExist){
+        const userExist = await UserModel.getFindEmail(email);
+        console.log("existe? ", userExist);
+        if(userExist && userExist.length > 0){
             res.status(400).json({message: `Usuário com e-mail ${email} já esta cadastrado!`});
             return;
         }
 
         //Criptografar a senha
         const salt                  = await bcrypt.genSaltSync(10);
-        const senhaCriptografada    = await bcrypt.hashSync(senha, salt);
+        const senhaCriptografada    = await bcrypt.hashSync(password, salt);
 
         //Criar usuário
         try {
-            const usuarioNovo = {nome, email, senha: senhaCriptografada};
-            await User.create(usuarioNovo);
+            const usuarioNovo = {name, email, password: senhaCriptografada};
+            await UserModel.create(usuarioNovo);
             res.status(201).json({message: "Usuário criado com sucesso!", usuarioNovo});
             return;         
         } catch (error) {
@@ -34,13 +35,14 @@ module.exports = class UserController{
     //Listar todos os usuários
     static async list(req, res){
         try {
-            const users = await User.findAll();
+            const users = await UserModel.getAll();
+            console.log("list => ", users);
 
-            if(users){
-                res.status(200).json({message: "Usuários encontrados!", users});
-            }else{
-                res.status(404).json({message: "Ainda não há usuários cadastrado no sistema!"});
-            }
+            // if(users){
+            //     res.status(200).json({message: "Usuários encontrados!", users});
+            // }else{
+            //     res.status(404).json({message: "Ainda não há usuários cadastrado no sistema!"});
+            // }
 
         } catch (error) {
             res.status(400).json({message: "Houve erro ao buscar usuários", error});
