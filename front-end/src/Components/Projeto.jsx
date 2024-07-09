@@ -14,16 +14,18 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 
-// eslint-disable-next-line react/prop-types
 function Grouped({ onAddTeam }) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    // Simula a chamada à API para buscar as opções
     fetch('/api/equipes')
       .then(response => response.json())
       .then(data => {
-        setOptions(data); // Assume que data é um array de objetos { id, name }
+        const formattedData = data.map(equipe => ({
+          firstLetter: equipe.name[0].toUpperCase(),
+          ...equipe
+        }));
+        setOptions(formattedData);
       })
       .catch(error => console.error('Erro ao buscar equipes:', error));
   }, []);
@@ -71,16 +73,13 @@ function Projeto() {
       },
       body: JSON.stringify(project),
     })
-    .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
         setMessage(data.message);
-        // Redireciona para a página de lista de projetos após o registro
         navigate('/listaProjetos');
       })
       .catch(error => console.error('Erro ao registrar projeto:', error));
   };
-
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,17 +89,11 @@ function Projeto() {
     }));
   };
 
-  const listTeams = () => {
-    fetch('/api/teams') // Endpoint para buscar as equipes no banco de dados
-      .then(response => response.json())
-      .then(data => {
-        // Adiciona as equipes ao estado do projeto
-        setProject((prevProject) => ({
-          ...prevProject,
-          teams: data.map(equipe => equipe.name), // Ajuste conforme a estrutura dos dados retornados
-        }));
-      })
-      .catch(error => console.error('Erro ao buscar equipes:', error));
+  const handleAddTeam = (team) => {
+    setProject((prevProject) => ({
+      ...prevProject,
+      teams: [...prevProject.teams, team],
+    }));
   };
 
   return (
@@ -165,7 +158,7 @@ function Projeto() {
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-            <Grouped onAddTeam={listTeams} />
+            <Grouped onAddTeam={handleAddTeam} />
             <Grid item xs={12} display="flex" justifyContent="center">
               <Button variant="contained" color="primary" type="submit">
                 Registrar Projeto
