@@ -10,7 +10,7 @@ import ListaTarefa from './Components/ListaTarefa';
 import ListaProjeto from './Components/ListaProjeto';
 import './Style/StyleGlobal.css';
 import JivoChatWidget from './Components/Jivochat';
-import GoogleCalendar from './Components/Googlecalen';
+//import GoogleCalendar from './Components/Googlecalen';
 const socket = io('http://localhost:5173');
 import io from 'socket.io-client';
 
@@ -48,7 +48,7 @@ const App = () => {
             <Route path="/listaProjeto" element={<ListaProjeto />} />
           </Routes>
           <JivoChatWidget />
-          <GoogleCalendar />
+          {/* <GoogleCalendar /> */}
         </div>
         <Footer />
       </BrowserRouter>

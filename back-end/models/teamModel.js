@@ -1,5 +1,5 @@
 const dbConnection = require("../db/conn.js");
-class projetoModel {
+class teamModel {
   executeSQL(sql, parameters = "") {
     return new Promise(function (resolve, reject) {
       dbConnection.query(sql, parameters, function (error, resposta) {
@@ -13,25 +13,19 @@ class projetoModel {
 
   /////////////////////////////////////////////////
 
-  apiCreate(newprojeto) {
-    const sql = 'INSERT INTO teams (name, descricao) VALUES (?, ?)';
+  apiCreate(newTeam) {
+    const sql = 'INSERT INTO equipes (name, descricao) VALUES (?, ?)';
     const values = [
-      newprojeto.name,
-      newprojeto.description,
+      newTeam.name,
+      newTeam.description,
     ]
     return this.executeSQL(sql, values);
   }
   apiList() {
-    const sql = `
-        SELECT 
-          e.id,
-          e.name
-        FROM 
-          equipes e
-    `;
+    const sql = 'SELECT * FROM equipes';
     return this.executeSQL(sql);
   }
 
   
 }
-module.exports = new projetoModel();
+module.exports = new teamModel();
