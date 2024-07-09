@@ -77,7 +77,7 @@ const Tarefa = () => {
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom style={{display:'flex',alignItems:'center',flexDirection:'column', marginTop:'80px'}}>
         Registro de Tarefa
       </Typography>
       <Box component="form" sx={{ mt: 2 }}>
@@ -142,10 +142,10 @@ const Tarefa = () => {
             </FormControl>
           </Grid>
           <Grid item xs={10}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom style={{display:'flex',alignItems:'center',flexDirection:'column',fontSize:'29px',marginLeft:'140px'}}>
               Atribuir Tarefa
             </Typography>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={2} alignItems="center" width='1000px'>
               <Grid item xs={10}>
                 <TextField
                   fullWidth
@@ -174,7 +174,7 @@ const Tarefa = () => {
               ))}
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', marginTop: '2px'}}>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
               Registrar Tarefa
             </Button>

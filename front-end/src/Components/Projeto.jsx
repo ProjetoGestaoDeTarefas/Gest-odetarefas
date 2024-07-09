@@ -14,6 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 
+// eslint-disable-next-line react/prop-types
 function Grouped({ onAddTeam }) {
   const [options, setOptions] = useState([]);
 
@@ -76,7 +77,7 @@ function Projeto() {
       .then(response => response.json())
       .then(data => {
         setMessage(data.message);
-        navigate('/listaProjetos');
+        navigate('/listaProjeto');
       })
       .catch(error => console.error('Erro ao registrar projeto:', error));
   };
@@ -99,10 +100,10 @@ function Projeto() {
   return (
     <Container maxWidth="md">
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography variant="h4" component="h1" gutterBottom style={{marginTop:'80px'}}>
           Registro de Projeto
         </Typography>
-        <Box component="form" sx={{ mt: 8, width: '100%' }} onSubmit={handleSubmit}>
+        <Box component="form" sx={{ mt: 1, width: '100%' }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField

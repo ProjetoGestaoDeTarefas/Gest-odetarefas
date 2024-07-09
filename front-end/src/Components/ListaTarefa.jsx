@@ -34,26 +34,9 @@ const ListaTarefa = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProjetos = async () => {
-      try {
-        const response = await fetch('/api/projeto');
-        if (!response.ok) {
-          throw new Error('Erro ao buscar projetos');
-        }
-        const data = await response.json();
-        setProjetos(data);
-      } catch (error) {
-        console.error('Erro ao buscar projetos:', error);
-      }
-    };
-
-    fetchProjetos();
-  }, []);
-
-  useEffect(() => {
     const fetchTarefas = async () => {
       try {
-        const response = await fetch('/api/tarefa');
+        const response = await fetch('/api/projeto');
         if (!response.ok) {
           throw new Error('Erro ao buscar tarefas');
         }
@@ -173,7 +156,8 @@ const ListaTarefa = () => {
               <TableCell>Descrição</TableCell>
               <TableCell>Data de Início</TableCell>
               <TableCell>Data de Término</TableCell>
-              <TableCell>Ações</TableCell>
+              <TableCell>Editar</TableCell>
+              <TableCell>Deletar</TableCell>
               <TableCell>Arquivar</TableCell>
             </TableRow>
           </TableHead>
