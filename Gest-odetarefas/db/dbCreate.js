@@ -41,12 +41,104 @@ class helpDeskDatabase {
   });
 }
 
+createTableUserTeam() {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS user_team (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  start_date DATE,
+  end_date DATE,
+  team_id INT,
+  member_id INT,
+  FOREIGN KEY (team_id) REFERENCES equipes(id),
+  FOREIGN KEY (member_id) REFERENCES users(id)
+) COMMENT tabela relacional;
+    `;
+
+  this.connection.query(sql, (error) => {
+    if (error) {
+      console.log("Ocorreu um erro ao criar a tabela User_Team..."); 
+      console.log(error.message); 
+      return;
+    }
+    console.log("Tabela User_Team criada com sucesso..."); 
+  });
+}
+
+
+createTableProjeto() {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS projetos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(200) NOT NULL,
+  descricao TEXT,
+  start_date DATE,
+  end_date DATE,
+  created_by INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id)
+) COMMENT 'tabela Projetos';
+    `;
+
+  this.connection.query(sql, (error) => {
+    if (error) {
+      console.log("Ocorreu um erro ao criar a tabela Projeto..."); 
+      console.log(error.message); 
+      return;
+    }
+    console.log("Tabela Projeto criada com sucesso..."); 
+  });
+}
+
+
+createTableUsers() {
+  const sql = `
+   CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(200) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'member') DEFAULT 'member',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) COMMENT 'Usuários';
+    `;
+
+  this.connection.query(sql, (error) => {
+    if (error) {
+      console.log("Ocorreu um erro ao criar a tabela de usuários..."); 
+      console.log(error.message); 
+      return;
+    }
+    console.log("Tabela de usuários criada com sucesso..."); 
+  });
+}
+
+
+createTableEquipes() {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS equipes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(200) NOT NULL
+) COMMENT 'Equipes';
+
+    `;
+
+  this.connection.query(sql, (error) => {
+    if (error) {
+      console.log("Ocorreu um erro ao criar a tabela Equipes..."); 
+      console.log(error.message); 
+      return;
+    }
+    console.log("Tabela Equipes criada com sucesso..."); 
+  });
+}
+
+
   createTableStatus() {
     const sql = `
       CREATE TABLE IF NOT EXISTS status(  
           id int NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key',
           descricao VARCHAR(60)
-      ) COMMENT 'Tabela Status que faz referencia na tabela tarefa';
+      ) COMMENT 'Tabela Status';
       `;
 
     this.connection.query(sql, (error) => {
