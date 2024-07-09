@@ -19,9 +19,10 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import { useNavigate } from 'react-router-dom';
 
 const ListaTarefa = () => {
   const [tarefas, setTarefas] = useState([]);
@@ -29,17 +30,35 @@ const ListaTarefa = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentAction, setCurrentAction] = useState('');
   const [currentTaskId, setCurrentTaskId] = useState(null);
+  const [projetos, setProjetos] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProjetos = async () => {
+      try {
+        const response = await fetch('/api/projeto');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar projetos');
+        }
+        const data = await response.json();
+        setProjetos(data);
+      } catch (error) {
+        console.error('Erro ao buscar projetos:', error);
+      }
+    };
+
+    fetchProjetos();
+  }, []);
 
   useEffect(() => {
     const fetchTarefas = async () => {
       try {
         const response = await fetch('/api/tarefa');
-        if (response.ok) {
-          const data = await response.json();
-          setTarefas(data);
-        } else {
-          console.error('Erro ao buscar tarefas:', response.status);
+        if (!response.ok) {
+          throw new Error('Erro ao buscar tarefas');
         }
+        const data = await response.json();
+        setTarefas(data);
       } catch (error) {
         console.error('Erro ao buscar tarefas:', error);
       }
@@ -68,29 +87,53 @@ const ListaTarefa = () => {
     setCurrentTaskId(null);
   };
 
-  const handleConfirmAction = async () => {
-    if (!currentTaskId || !currentAction) return;
+  const handleEditarProjeto = (id) => {
+    // Navega para a página de edição do projeto com o ID fornecido
+    navigate(`/projeto/update/${id}`);
+  };
 
+  const handleExcluirProjeto = async (id) => {
     try {
-      const response = await fetch(`/api/tarefa/${currentTaskId}`, {
-        method: currentAction === 'delete' ? 'DELETE' : 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: currentAction === 'archive' ? JSON.stringify({ status: 'Archived' }) : null,
+      // Lógica para excluir o projeto com o ID fornecido
+      const response = await fetch(`/api/projeto/${id}`, {
+        method: 'DELETE',
       });
-
-      if (response.ok) {
-        setTarefas((prevTarefas) =>
-          prevTarefas.filter((tarefa) => tarefa.id !== currentTaskId)
-        );
-      } else {
-        console.error('Erro ao realizar ação:', response.status);
+      if (!response.ok) {
+        throw new Error('Erro ao excluir projeto');
       }
+      // Atualiza a lista de projetos após a exclusão
+      setProjetos(projetos.filter((projeto) => projeto.id !== id));
+      console.log(`Projeto com ID ${id} excluído com sucesso`);
     } catch (error) {
-      console.error('Erro ao realizar ação:', error);
+      console.error('Erro ao excluir projeto:', error);
     }
+  };
 
+  const handleArquivarProjeto = async (id) => {
+    try {
+      // Lógica para arquivar o projeto com o ID fornecido
+      const response = await fetch(`/api/projeto/archive/${id}`, {
+        method: 'PATCH',
+      });
+      if (!response.ok) {
+        throw new Error('Erro ao arquivar projeto');
+      }
+      // Atualiza a lista de projetos após arquivamento
+      setProjetos(projetos.map((projeto) => 
+        projeto.id === id ? { ...projeto, arquivado: true } : projeto
+      ));
+      console.log(`Projeto com ID ${id} arquivado com sucesso`);
+    } catch (error) {
+      console.error('Erro ao arquivar projeto:', error);
+    }
+  };
+
+  const handleConfirmAction = async () => {
+    if (currentAction === 'delete') {
+      await handleExcluirProjeto(currentTaskId);
+    } else if (currentAction === 'archive') {
+      await handleArquivarProjeto(currentTaskId);
+    }
     handleCloseDialog();
   };
 
@@ -113,12 +156,7 @@ const ListaTarefa = () => {
           />
         </Grid>
         <Grid item xs={2}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSearchChange}
-          >
+          <Button fullWidth variant="contained" color="primary">
             Pesquisar
           </Button>
         </Grid>
@@ -131,8 +169,8 @@ const ListaTarefa = () => {
             <TableRow>
               <TableCell>Código</TableCell>
               <TableCell>Título</TableCell>
+              <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
-              <TableCell>Status</TableCell>
               <TableCell>Data de Início</TableCell>
               <TableCell>Data de Término</TableCell>
               <TableCell>Ações</TableCell>
@@ -147,24 +185,22 @@ const ListaTarefa = () => {
                 <TableCell>{row.description}</TableCell>
                 <TableCell>{row.priority}</TableCell>
                 <TableCell>{row.created_at}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.descricao}</TableCell>
+                <TableCell>{row.start_date}</TableCell>
                 <TableCell>{row.end_date}</TableCell>
                 <TableCell>
-                  <IconButton
-                    color="primary"
-                    onClick={() => window.location.href = `tarefa/update/${row.id}`}
-                  >
-                    <EditIcon />
+                  <IconButton aria-label="Editar" onClick={() => handleEditarProjeto(row.id)}>
+                    <CreateIcon />
                   </IconButton>
-                  <IconButton
-                    color="secondary"
-                    onClick={() => handleOpenDialog('delete', row.id)}
-                  >
+                </TableCell>
+                <TableCell>
+                  <IconButton aria-label="Excluir" onClick={() => handleOpenDialog('delete', row.id)}>
                     <DeleteIcon />
                   </IconButton>
-                  <IconButton
-                    color="default"
-                    onClick={() => handleOpenDialog('archive', row.id)}
-                  >
+                </TableCell>
+                <TableCell>
+                  <IconButton aria-label="Arquivar" onClick={() => handleOpenDialog('archive', row.id)}>
                     <ArchiveIcon />
                   </IconButton>
                 </TableCell>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -22,19 +22,7 @@ const Equipe = () => {
 
   const [members, setMembers] = useState([]);
   const [memberName, setMemberName] = useState('');
-
-
-  const handleSubmit = (event) => {
-    fetch('/api/team', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(teamCreate),
-    })
-    .then(response => response.json())
-    .then(data => setMessage(data.message));
-  }
+  const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,12 +43,41 @@ const Equipe = () => {
     setMembers((prevMembers) => prevMembers.filter((_, i) => i !== index));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const teamCreate = {
+      ...task,
+      members,
+    };
+    fetch('/api/team', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(teamCreate),
+    })
+      .then(response => response.json())
+      .then(data => setMessage(data.message));
+  };
+
+  const handleSendInvites = () => {
+    fetch('/api/send-invites', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ members }),
+    })
+      .then(response => response.json())
+      .then(data => setMessage(data.message));
+  };
+
   return (
     <Container maxWidth="md">
       <Typography variant="h4" component="h1" gutterBottom>
         Registro de Equipe
       </Typography>
-      <Box component="form" sx={{ mt: 2 }}>
+      <Box component="form" sx={{ mt: 2 }} onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
@@ -82,20 +99,15 @@ const Equipe = () => {
               onChange={handleChange}
             />
           </Grid>
-          
-         
-          
-           
-          </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={12} style={{ marginTop: '20px' }}>
             <Typography variant="h6" gutterBottom>
-              Atribuir Tarefa
+              Adicionar Membro
             </Typography>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={10}>
                 <TextField
                   fullWidth
-                  label="Membro da Equipe"
+                  label="Coloque o email do membro"
                   value={memberName}
                   onChange={(e) => setMemberName(e.target.value)}
                 />
@@ -120,18 +132,19 @@ const Equipe = () => {
               ))}
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" color="primary" onSubmit={handleSubmit}>
+          <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <Button variant="contained" color="primary" type="submit" style={{ marginRight: '10px' }}>
               Registrar EQUIPE
             </Button>
-          </Grid>   
-        
+            <Button variant="contained" color="secondary" onClick={handleSendInvites}>
+              Enviar Convites
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
+      {message && <Typography variant="body1" color="success">{message}</Typography>}
     </Container>
   );
 };
-
-
-
 
 export default Equipe;

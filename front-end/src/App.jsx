@@ -1,4 +1,4 @@
-
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
@@ -11,12 +11,33 @@ import ListaProjeto from './Components/ListaProjeto';
 import './Style/StyleGlobal.css';
 import JivoChatWidget from './Components/Jivochat';
 //import GoogleCalendar from './Components/Googlecalen';
+const socket = io('http://localhost:5173');
+import io from 'socket.io-client';
 
 const App = () => {
+  const [notifications, setNotifications] = useState(0);
+    const [emails, setEmails] = useState(0);
+
+    useEffect(() => {
+        socket.on('notification', (data) => {
+            setNotifications((prev) => prev + 1);
+            console.log(data.message);
+        });
+
+        socket.on('email', (data) => {
+            setEmails((prev) => prev + 1);
+            console.log(data.message);
+        });
+
+        return () => {
+            socket.off('notification');
+            socket.off('email');
+        };
+    }, []);
   return (
     <div id="root">
       <BrowserRouter>
-        <Navbar />
+        <Navbar notifications={notifications} emails={emails} />
         <div className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />

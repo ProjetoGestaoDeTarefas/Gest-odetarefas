@@ -76,7 +76,7 @@ const ListaProjeto = () => {
       </Typography>
 
       {/* Barra de Pesquisa */}
-      <form className="d-flex mb-3" onSubmit={(e) => e.preventDefault()}>
+      <form className="d-flex mb-2 ml-4" onSubmit={(e) => e.preventDefault()}>
         <TextField
           className="me-2"
           variant="outlined"
@@ -85,15 +85,16 @@ const ListaProjeto = () => {
           placeholder="Pesquisa..."
           value={pesquisa}
           onChange={handlePesquisaChange}
-          style={{ width: '50%' }}
+          style={{ width: '50%',marginBottom:'30px',marginTop:'10px'  }}
         />
         <Button
           variant="contained"
           color="primary"
           onClick={handlePesquisaChange}
-          style={{ minWidth: '130px' }}
+          style={{ minWidth: '241px',marginLeft:'10px',marginTop:'20px'}}
         >
-          <i className="fas fa-search me-1"></i> Pesquisar
+          <i className="fas fa-search me-1"
+          style={{marginLeft:'8px',justifyContent: 'space-around',display:'block'}}></i> Pesquisar
         </Button>
       </form>
 
