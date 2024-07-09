@@ -35,12 +35,12 @@ class helpDeskDatabase {
         }
         console.log("Banco de dados selecionado com sucesso..."); 
         this.createTableStatus(); 
-        this.createTableTarefa(); 
-        this.createInsertStatus();
-        this.createTableUserTeam();
-        this.createTableProjeto();
-        this.createTableEquipe();
         this.createTableUsers();
+        this.createTableEquipe();
+        this.createInsertStatus();
+        this.createTableProjeto();
+        this.createTableUserTeam();
+        this.createTableTarefa(); 
 
     });
   });
