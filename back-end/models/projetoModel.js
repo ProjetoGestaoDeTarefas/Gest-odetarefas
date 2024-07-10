@@ -47,6 +47,37 @@ class projetoModel {
     return this.executeSQL(sql, [updatedtarefa, id]);
   }
 
+  apiSearch(pesquisa) {
+    const sql = `
+        SELECT 
+            id, 
+            name, 
+            descricao, 
+            start_date, 
+            end_date,
+            created_by
+            
+        FROM 
+            projetos 
+
+        WHERE 
+            id = ? OR                                                                                 
+            title LIKE ? OR 
+            description LIKE ? OR 
+            start_date LIKE ? OR 
+            end_date LIKE ? OR
+            created_by LIKE ?
+    `;
+    return this.executeSQL(sql, [
+      pesquisa,
+      pesquisa,
+      pesquisa,
+      pesquisa,
+      pesquisa,
+      pesquisa,
+    ]);
+  }
+
 }
 module.exports = new projetoModel();
 

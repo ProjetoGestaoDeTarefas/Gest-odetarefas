@@ -9,6 +9,15 @@ class teamController {
       .then((result) => res.status(201).json("Equipe criada com sucesso!"))
       .catch((error) => res.status(400).json(error.message));
   };
+  
+  addUser = (req, res) => {
+    const id = req.params.id;
+    const reqBody = req.body;
+    const retorno = teamModel.apiAdd(reqBody, id);
+    return retorno
+      .then((result) => res.status(201).json("Equipe editada com sucesso!"))
+      .catch((error) => res.status(400).json(error.message));
+  };
 
   listTeam(req, res) {
     const retorno = teamModel.apiList();
@@ -20,5 +29,6 @@ class teamController {
       )
       .catch((error) => res.status(400).json(error.message));
   }
+
 }
 module.exports = new teamController();

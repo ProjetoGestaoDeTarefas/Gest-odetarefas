@@ -11,8 +11,8 @@ import ListaProjeto from './Components/ListaProjeto';
 import './Style/StyleGlobal.css';
 import JivoChatWidget from './Components/Jivochat';
 //import GoogleCalendar from './Components/Googlecalen';
-const socket = io('http://localhost:5173');
 import io from 'socket.io-client';
+const socket = io('http://localhost:5173');
 
 const App = () => {
   const [notifications, setNotifications] = useState(0);

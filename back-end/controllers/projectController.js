@@ -44,6 +44,18 @@ class projetoController {
 
   }
 
+  searchProject(req, res) {
+    const pesquisa  = '%' + req.body.search + '%';
+    const projetoList = projetoModel.apiSearch(pesquisa);
+    return projetoList
+      .then((result) =>
+        result.length == 0
+          ? res.status(404).render("./projeto/projeto_read", { title: "projeto", projeto: result, search: req.body.search })
+          : res.status(200).render("./projeto/projeto_read", { title: "projeto", projeto: result, search: req.body.search })
+      )
+      .catch((error) => res.status(400).send(error.message));  
+  }
+
 
 }
 module.exports = new projetoController();

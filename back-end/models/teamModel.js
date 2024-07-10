@@ -14,10 +14,19 @@ class teamModel {
   /////////////////////////////////////////////////
 
   apiCreate(newTeam) {
-    const sql = 'INSERT INTO equipes (name, descricao) VALUES (?, ?)';
+    const sql = 'INSERT INTO equipes (name) VALUES (?)';
     const values = [
       newTeam.name,
-      newTeam.description,
+    ]
+    return this.executeSQL(sql, values);
+  }
+  apiAdd(newTeam, id) {
+    const sql = 'INSERT INTO user_team (start_date, end_date, team_id, member_id) VALUES (?, ?, ?, ?)';
+    const values = [
+      newTeam.startDate,
+      newTeam.endDate,
+      id,
+      newTeam.id,
     ]
     return this.executeSQL(sql, values);
   }

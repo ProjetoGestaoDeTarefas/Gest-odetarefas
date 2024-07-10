@@ -36,7 +36,7 @@ class tarefaModel {
       newtarefa.name,
       newtarefa.description,
       newtarefa.startDate,
-      newtarefa.endDate,
+      newtarefa.endDate
       // newtarefa.priority
     ];
     return this.executeSQL(sql, values);
@@ -85,7 +85,7 @@ class tarefaModel {
       newtarefa.description,
       newtarefa.start_date,
       newtarefa.end_date,
-      newtarefa.priority,
+      newtarefa.priority
     ];
     return this.executeSQL(sql, values);
   }

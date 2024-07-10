@@ -89,7 +89,7 @@ module.exports = class UserController {
     //Excluir um determinado usuário
     static async destroy(req, res) {
 
-        const idUser = req.params.id;
+        const id = req.params.id;
 
         try {
             //Verifica se usuário existe
@@ -101,7 +101,7 @@ module.exports = class UserController {
             }
 
             await UserModel.destroy(id);
-            res.status(200).json({ message: `Usuário com id ${idUser} excluído com sucesso` });
+            res.status(200).json({ message: `Usuário com id ${id} excluído com sucesso` });
 
         } catch (error) {
             res.status(400).json({ message: `Erro ao excluir usuário!`, error });
@@ -112,7 +112,8 @@ module.exports = class UserController {
     //Editar um determinado usuário
     static async edit(req, res) {
         const { id } = req.params;
-        const { nome, email } = req.body;
+        const { name, email } = req.body;
+        console.log(name, email);
 
         try {
             //Verifica se usuário existe
@@ -122,7 +123,7 @@ module.exports = class UserController {
                 return;
             }
 
-            const userNovo = { nome, email };
+            const userNovo = { name, email };
             await UserModel.update(userNovo, id);
             res.status(200).json({ message: "Dados do Usuário editados com sucesso!", userNovo });
 
@@ -132,5 +133,28 @@ module.exports = class UserController {
         }
 
     }
+    
+    //Tornar um determinado usuário ADMIN
+    static async admin(req, res) {
+        const { id } = req.params;
+        const { name, email } = req.body;
+        // console.log(name, email);
 
+        try {
+            //Verifica se usuário existe
+            const user = await UserModel.getFindId(id);
+            if (!user) {
+                res.status(404).json({ message: "O Usuário que você está tentando editar não está cadastrado!" });
+                return;
+            }
+
+            await UserModel.updateAdm(id);
+            res.status(200).json({ message: `Agora o Usuário ${name} é um Administrador`});
+
+        } catch (error) {
+            res.status(400).json({ message: `Erro ao alterar Permissões!`, error });
+            return;
+        }
+
+    }
 }
