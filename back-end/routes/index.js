@@ -1,13 +1,15 @@
-const routertarefa = require("./tarefaRouter.js");
-const routerprojeto = require("./projetoRouter.js");
-const routeruser = require("./userRouters.js");
-const routerauth = require("./authRouters.js");
+const tarefaRouters = require("./tarefaRouter.js");
+const projetoRouters = require("./projetoRouter.js");
+const userRouters = require("./userRouters");
+const authRouters = require("./authRouters.js");
+const teamRouters = require("./teamRouter.js");
 
 module.exports = function (app, express) {
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }));
-    app.use(routertarefa);
-    app.use(routerprojeto);
-    app.use(routeruser);
-    app.use(routerauth);
+    app.use(tarefaRouters);
+    app.use(projetoRouters);
+    app.use(authRouters);
+    app.use(userRouters);
+    app.use(teamRouters);
 }

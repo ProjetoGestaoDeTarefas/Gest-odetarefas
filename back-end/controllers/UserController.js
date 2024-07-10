@@ -5,13 +5,13 @@ const UserModel = require("../models/UserModel");
 module.exports = class UserController {
 
     //Cadastrar usuário
-    static async save(req, res) {
+    static async register(req, res) {
 
         const { name, email, password } = req.body;
 
         //Verifica se usuário com este e-mail já existe
         const userExist = await UserModel.getFindEmail(email);
-        console.log("userExist ", userExist);
+        // console.log("userExist ", userExist);
         if (userExist && userExist.length > 0) {
             res.status(400).json({ message: `Usuário com e-mail ${email} já esta cadastrado!` });
             return;
@@ -37,11 +37,11 @@ module.exports = class UserController {
 
         const { email, password } = req.body;
 
-        console.log("cheguei aqui 1")
+        // console.log("cheguei aqui 1")
         try {
-            console.log("cheguei aqui 2")
+            // console.log("cheguei aqui 2")
             const userExist = await UserModel.getFindEmail(email);
-            console.log("userExist ", userExist);
+            // console.log("userExist ", userExist);
 
             if (!userExist) {
                 res.status(400).json({ message: 'Usuário não cadastrado!' });
@@ -72,13 +72,13 @@ module.exports = class UserController {
     static async list(req, res) {
         try {
             const users = await UserModel.getAll();
-            console.log("list => ", users);
+            // console.log("list => ", users);
 
-            // if(users){
-            //     res.status(200).json({message: "Usuários encontrados!", users});
-            // }else{
-            //     res.status(404).json({message: "Ainda não há usuários cadastrado no sistema!"});
-            // }
+             if(users.length > 0) {
+                 res.status(200).json({message: users});
+             }else{
+                 res.status(404).json({message: "Ainda não há usuários cadastrado no sistema!"});
+             }
 
         } catch (error) {
             res.status(400).json({ message: "Houve erro ao buscar usuários", error });
@@ -93,14 +93,14 @@ module.exports = class UserController {
 
         try {
             //Verifica se usuário existe
-            const user = await User.findOne({ where: { id: idUser } });
+            const user = await UserModel.getFindId(id);
 
             if (!user) {
                 res.status(404).json({ message: "Usuário não está cadastrado!" });
                 return;
             }
 
-            await User.destroy({ where: { id: idUser } });
+            await UserModel.destroy(id);
             res.status(200).json({ message: `Usuário com id ${idUser} excluído com sucesso` });
 
         } catch (error) {
@@ -111,18 +111,19 @@ module.exports = class UserController {
 
     //Editar um determinado usuário
     static async edit(req, res) {
-        const { id, nome, email } = req.body;
+        const { id } = req.params;
+        const { nome, email } = req.body;
 
         try {
             //Verifica se usuário existe
-            const user = await User.findOne({ where: { id: id } });
+            const user = await UserModel.getFindId(id);
             if (!user) {
-                res.status(404).json({ message: "Usuário não está cadastrado!" });
+                res.status(404).json({ message: "O Usuário que você está tentando editar não está cadastrado!" });
                 return;
             }
 
             const userNovo = { nome, email };
-            await User.update(userNovo, { where: { id: id } });
+            await UserModel.update(userNovo, id);
             res.status(200).json({ message: "Dados do Usuário editados com sucesso!", userNovo });
 
         } catch (error) {

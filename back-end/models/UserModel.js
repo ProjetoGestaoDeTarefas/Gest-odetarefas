@@ -58,6 +58,26 @@ class UserModel {
             return null;
         }
     }
+    static async getFindId(id) {
+        const sql = 'SELECT name, email, password, role, created_at FROM users WHERE id = ?';
+        const result = await this.executeSQL(sql, [id]);
+
+        if (result.length > 0) {
+            return result[0];
+        } else {
+            return null;
+        }
+    }
+
+    static async destroy(id) {
+        const sql = "DELETE FROM users WHERE id = ?";
+        return this.executeSQL(sql, id);
+      }
+
+      static async update(updateUser, id) {
+        const sql = "UPDATE users SET ? WHERE id = ?";
+        return this.executeSQL(sql, [updateUser, id]);
+      }
 
 }
 

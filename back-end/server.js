@@ -11,12 +11,6 @@ const port = 3000;
 
 app.use(express.json());
 
-const userRouters = require("./routes/userRouters");
-const authRouters = require("./routes/authRouters.js");
-
-app.use('/api/',authRouters);
-app.use('/api/user/',userRouters);
-
 // // Rotas de Autenticação
 // app.post('/register', (req, res) => {
 //     const { name, email, password } = req.body;
