@@ -15,9 +15,9 @@ const getCurrentFormattedDate = () => {
 
 class UserModel {
 
-    executeSQL(sql, parameters = "") {
-        return new Promise(function (resolve, reject) {
-            dbConnection.query(sql, parameters, function (error, resposta) {
+    static executeSQL(sql, parameters = []) {
+        return new Promise((resolve, reject) => {
+            dbConnection.query(sql, parameters, (error, resposta) => {
                 if (error) {
                     return reject(error);
                 }
@@ -28,7 +28,7 @@ class UserModel {
 
     /////////////////////////////////////////////////
 
-    create(dto) {
+    static async create(dto) {
         const sql = 'INSERT INTO users (name, email, password, role, created_at) VALUES (?, ?, ?, ?, ?)';
         const createdAt = getCurrentFormattedDate();
         const values = [
@@ -39,20 +39,26 @@ class UserModel {
             createdAt
         ]
 
-        return this.executeSQL(sql, values);
+        return await this.executeSQL(sql, values);
     }
 
 
-    getAll() {
+    static async getAll() {
         const sql = 'SELECT name, email, password, role, created_at FROM users';
-        return this.executeSQL(sql);
+        return await this.executeSQL(sql);
     }
 
-    getFindEmail(email) {
-        const sql = `SELECT name, email, password, role, created_at FROM users WHERE email = '${email}'`;
-        return this.executeSQL(sql, email);
+    static async getFindEmail(email) {
+        const sql = 'SELECT name, email, password, role, created_at FROM users WHERE email = ?';
+        const result = await this.executeSQL(sql, [email]);
+
+        if (result.length > 0) {
+            return result[0];
+        } else {
+            return null;
+        }
     }
 
 }
 
-module.exports = new UserModel();
+module.exports = UserModel;

@@ -5,14 +5,16 @@ const router = require("./routes/index.js");
 const conn = require('./db/conn.js');
 const db = require('./db/index.js');
 db();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcryptjs');
+// const jwt = require('jsonwebtoken');
 const port = 3000;
 
 app.use(express.json());
 
 const userRouters = require("./routes/userRouters");
+const authRouters = require("./routes/authRouters.js");
 
+app.use('/api/',authRouters);
 app.use('/api/user/',userRouters);
 
 // // Rotas de Autenticação
