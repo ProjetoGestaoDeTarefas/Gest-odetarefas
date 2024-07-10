@@ -14,10 +14,9 @@ class teamModel {
   /////////////////////////////////////////////////
 
   apiCreate(newTeam) {
-    const sql = 'INSERT INTO equipes (name, descricao) VALUES (?, ?)';
+    const sql = 'INSERT INTO equipes (name) VALUES (?)';
     const values = [
       newTeam.name,
-      newTeam.description,
     ]
     return this.executeSQL(sql, values);
   }

@@ -24,6 +24,12 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+const StyledAppBar = styled(AppBar)({
+  backgroundColor: '#000080',
+  '&:hover': {
+    backgroundColor: '#FF8C00',
+  },
+});
 function Navbar({ notifications, emails }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -108,6 +114,7 @@ function Navbar({ notifications, emails }) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <StyledAppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar sx={{ left: 0, right: 0 }}>
           <StyledIconButton size="large" edge="start" color="inherit" aria-label="open drawer">
@@ -176,6 +183,7 @@ function Navbar({ notifications, emails }) {
           </Box>
         </Toolbar>
       </AppBar>
+      </StyledAppBar>
       {renderMobileMenu}
       {renderMenu}
     </Box>
