@@ -1,4 +1,3 @@
-
 class helpDeskDatabase {
   
   initConnection(connection) {
@@ -56,7 +55,7 @@ createTableUserTeam() {
   member_id INT,
   FOREIGN KEY (team_id) REFERENCES equipes(id),
   FOREIGN KEY (member_id) REFERENCES users(id)
-) COMMENT tabela relacional;
+) COMMENT "tabela relacional";
     `;
 
   this.connection.query(sql, (error) => {
@@ -158,16 +157,19 @@ createTableEquipe() {
 
   createTableTarefa() {
     const sql = `
-      CREATE TABLE IF NOT EXISTS tarefas(  
-          id int NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Primary Key',
-          descricao VARCHAR(255),
-          status_id INT,
-          dataCadastro DATETIME COMMENT 'Data de inclusão',
-          dataFinalizado DATETIME COMMENT 'Data da Finalização',
-          foreign key (status_id) references status(id)
-                     ON DELETE CASCADE
-                     ON UPDATE CASCADE
-      ) COMMENT 'Tabela de tarefas';
+      CREATE TABLE IF NOT EXISTS tarefas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  description TEXT,
+  start_date DATE,
+  end_date DATE,
+  priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
+  project_id INT,
+  assigned_to INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (project_id) REFERENCES projetos(id),
+  FOREIGN KEY (assigned_to) REFERENCES users(id)
+) COMMENT 'tabela tarefas';
       `;
     this.connection.query(sql, (error) => {
       if (error) {
@@ -180,7 +182,8 @@ createTableEquipe() {
   }
   createInsertStatus() {
     // Definindo a consulta para contar o número de registros na tabela
-    let contadorQuery = `SELECT COUNT(*) AS count FROM status`;
+    let contadorQuery = "SELECT COUNT(*) AS count FROM status";
+
     
     // Executando a consulta para contar os registros
     this.connection.query(contadorQuery, (error, results) => {
