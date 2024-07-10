@@ -27,7 +27,7 @@ const ListaProjeto = () => {
       try {
         const response = await fetch('/api/projeto');
         if (!response.ok) {
-          throw new Error('Erro ao buscar projetos');
+          throw new Error('Projetos não encotrados!');
         }
         const data = await response.json();
         setProjetos(data);
