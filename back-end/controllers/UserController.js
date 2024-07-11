@@ -68,6 +68,32 @@ module.exports = class UserController {
         }
     }
 
+    static async resetPassword(req, res) {
+        const { email, newPassword } = req.body;
+      
+        // Verifica se o usuário com este e-mail existe
+        const userExist = await UserModel.getFindEmail(email);
+        if (!userExist || userExist.length === 0) {
+          res.status(400).json({ message: `Usuário com e-mail ${email} não encontrado!` });
+          return;
+        }
+      
+        // Criptografa a nova senha
+        const salt = await bcrypt.genSaltSync(10);
+        const senhaCriptografada = await bcrypt.hashSync(newPassword, salt);
+      
+        // Atualiza a senha do usuário
+        try {
+          await UserModel.updatePassword(email, senhaCriptografada);
+          res.status(200).json({ message: "Senha redefinida com sucesso!" });
+          return;
+        } catch (error) {
+          res.status(400).json({ message: "Ocorreu um erro ao redefinir a senha.", error });
+          return;
+        }
+      }
+      
+
     //Listar todos os usuários
     static async list(req, res) {
         try {

@@ -83,6 +83,12 @@ class UserModel {
         const sql = "UPDATE users SET role = 'admin' WHERE id = ?";
         return this.executeSQL(sql, [id]);
       }
+
+      static async updatePassword(email, newPassword) {
+        const sql = "UPDATE users SET password = ? WHERE email = ?";
+        return this.executeSQL(sql, [newPassword, email]);
+      }
+      
 }
 
 module.exports = UserModel;
