@@ -63,7 +63,7 @@ function Home() {
 const [dados, setDados] = useState([]);
 
 useEffect(() => {
-  fetch('/api/projetos')
+  fetch('/api/projeto')
     .then(response => response.json())
     .then(data => setDados(data));
 }, []);
@@ -82,9 +82,9 @@ useEffect(() => {
     <div>
       <div>{message}</div>
       <ul>
-        {users.map(user => (
+        {/* {users.map(user => (
           <li key={user}>{user}</li>
-        ))}
+        ))} */}
         {dados.map(dado => (
         <li key={dado.id}>{dado.name} {dado.descricao}</li> // ajuste de acordo com a estrutura dos seus dados
       ))}
