@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import Home from './Components/Home';
@@ -8,13 +8,18 @@ import Tarefa from './Components/Tarefa';
 import Equipe from './Components/Equipe';
 import ListaTarefa from './Components/ListaTarefa';
 import ListaProjeto from './Components/ListaProjeto';
-import './Style/StyleGlobal.css';
+import CriarUsuario from './Components/CriarUsuario';
+import Login from './Components/login'; 
+import RedefinirSenha from './Components/RedefinirSenha'; 
 import JivoChatWidget from './Components/Jivochat';
-//import GoogleCalendar from './Components/Googlecalen';
 import io from 'socket.io-client';
+
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+
 const socket = io('http://localhost:5173');
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [notifications, setNotifications] = useState(0);
   const [emails, setEmails] = useState(0);
 
@@ -34,25 +39,40 @@ const App = () => {
       socket.off('email');
     };
   }, []);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
   return (
-    <div id="root">
-      <BrowserRouter>
-        <Navbar notifications={notifications} emails={emails} />
-        <div className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/projeto" element={<Projeto />} />
-            <Route path="/tarefa" element={<Tarefa />} />
-            <Route path="/equipe" element={<Equipe />} />
-            <Route path="/listaTarefa" element={<ListaTarefa />} />
-            <Route path="/listaProjeto" element={<ListaProjeto />} />
-          </Routes>
-          <JivoChatWidget />
-          {/* <GoogleCalendar /> */}
-        </div>
-        <Footer />
-      </BrowserRouter>
-    </div>
+    <Router>
+      <Routes>
+        {isAuthenticated ? (
+          <>
+            <Navbar notifications={notifications} emails={emails} />
+            <div className="main-content">
+              <Route path="/home" element={<Home />} />
+              <Route path="/projeto" element={<Projeto />} />
+              <Route path="/tarefa" element={<Tarefa />} />
+              <Route path="/equipe" element={<Equipe />} />
+              <Route path="/listaTarefa" element={<ListaTarefa />} />
+              <Route path="/listaProjeto" element={<ListaProjeto />} />
+              <Route path="/criar-usuario" element={<CriarUsuario />} />
+              <Route path="/" element={<Navigate to="/home" />} />
+            </div>
+            <JivoChatWidget />
+            <Footer />
+          </>
+        ) : (
+          <>
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <Route path="/criar-usuario" element={<CriarUsuario />} />
+            <Route path="/redefinir-senha" element={<RedefinirSenha />} /> {/* Rota para Redefinir Senha */}
+            <Route path="*" element={<Navigate to="/login" />} />
+          </>
+        )}
+      </Routes>
+    </Router>
   );
 };
 
