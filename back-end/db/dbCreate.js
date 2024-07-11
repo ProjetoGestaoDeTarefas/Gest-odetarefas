@@ -54,7 +54,7 @@ createTableUserTeam() {
   team_id INT,
   member_id INT,
   FOREIGN KEY (team_id) REFERENCES equipes(id),
-  FOREIGN KEY (member_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id)
 ) COMMENT "tabela relacional";
     `;
 

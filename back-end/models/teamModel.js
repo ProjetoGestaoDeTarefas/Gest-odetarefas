@@ -31,9 +31,18 @@ class teamModel {
     return this.executeSQL(sql, values);
   }
   apiList() {
-    const sql = 'SELECT * FROM equipes';
+    const sql = (`SELECT e.name, COUNT(ut.member_id) AS quantidade_usuarios
+  FROM equipes e
+  LEFT JOIN user_team ut ON e.id = ut.team_id
+  GROUP BY e.name;`)
     return this.executeSQL(sql);
   }
+
+
+
+
+  
+
 
   
 }

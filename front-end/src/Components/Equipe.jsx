@@ -59,7 +59,7 @@ const Equipe = () => {
       ...task,
       members: memberEmails.filter(email => email.trim() !== ''),
     };
-    fetch('/api/team', {
+    fetch('/api/equipe', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

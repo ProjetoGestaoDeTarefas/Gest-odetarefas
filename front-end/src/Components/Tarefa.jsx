@@ -135,9 +135,9 @@ const Tarefa = () => {
                 onChange={handleChange}
               >
                 <MenuItem value="">Selecione...</MenuItem>
-                <MenuItem value="baixa">Baixa</MenuItem>
-                <MenuItem value="media">Média</MenuItem>
-                <MenuItem value="alta">Alta</MenuItem>
+                <MenuItem value="low">Baixa</MenuItem>
+                <MenuItem value="medium">Média</MenuItem>
+                <MenuItem value="high">Alta</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -149,7 +149,7 @@ const Tarefa = () => {
               <Grid item xs={10}>
                 <TextField
                   fullWidth
-                  label="Membro da Equipe"
+                  label="Insira um Usuário"
                   value={memberName}
                   onChange={(e) => setMemberName(e.target.value)}
                 />
