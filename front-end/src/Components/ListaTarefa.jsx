@@ -30,7 +30,6 @@ const ListaTarefa = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentAction, setCurrentAction] = useState('');
   const [currentTaskId, setCurrentTaskId] = useState(null);
-  const [projetos, setProjetos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,21 +70,18 @@ const ListaTarefa = () => {
   };
 
   const handleEditarProjeto = (id) => {
-    // Navega para a página de edição do projeto com o ID fornecido
     navigate(`/projeto/update/${id}`);
   };
 
   const handleExcluirProjeto = async (id) => {
     try {
-      // Lógica para excluir o projeto com o ID fornecido
       const response = await fetch(`/api/projeto/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
         throw new Error('Erro ao excluir projeto');
       }
-      // Atualiza a lista de projetos após a exclusão
-      setProjetos(projetos.filter((projeto) => projeto.id !== id));
+      setTarefas(tarefas.filter((tarefa) => tarefa.id !== id));
       console.log(`Projeto com ID ${id} excluído com sucesso`);
     } catch (error) {
       console.error('Erro ao excluir projeto:', error);
@@ -94,16 +90,14 @@ const ListaTarefa = () => {
 
   const handleArquivarProjeto = async (id) => {
     try {
-      // Lógica para arquivar o projeto com o ID fornecido
       const response = await fetch(`/api/projeto/archive/${id}`, {
         method: 'PATCH',
       });
       if (!response.ok) {
         throw new Error('Erro ao arquivar projeto');
       }
-      // Atualiza a lista de projetos após arquivamento
-      setProjetos(projetos.map((projeto) => 
-        projeto.id === id ? { ...projeto, arquivado: true } : projeto
+      setTarefas(tarefas.map((tarefa) => 
+        tarefa.id === id ? { ...tarefa, arquivado: true } : tarefa
       ));
       console.log(`Projeto com ID ${id} arquivado com sucesso`);
     } catch (error) {
@@ -126,8 +120,8 @@ const ListaTarefa = () => {
         Listagem de Tarefas
       </Typography>
 
-      <Grid container spacing={1} alignItems="center">
-        <Grid item xs={7}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={8}>
           <TextField
             fullWidth
             variant="outlined"
@@ -136,16 +130,16 @@ const ListaTarefa = () => {
             placeholder="Pesquisa..."
             value={search}
             onChange={handleSearchChange}
+            style={{ marginRight: '10px' }}
           />
         </Grid>
-        <Grid item xs={2}>
-          <Button fullWidth variant="contained" color="primary">
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="primary" style={{ height: '100%' }}>
             Pesquisar
           </Button>
         </Grid>
       </Grid>
 
-      {/* Tabela de Tarefas */}
       <TableContainer component={Paper} style={{ marginTop: '20px' }}>
         <Table aria-label="simple table">
           <TableHead>
@@ -166,9 +160,6 @@ const ListaTarefa = () => {
               <TableRow key={row.id} className="align-middle">
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.title}</TableCell>
-                <TableCell>{row.description}</TableCell>
-                <TableCell>{row.priority}</TableCell>
-                <TableCell>{row.created_at}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.descricao}</TableCell>
                 <TableCell>{row.start_date}</TableCell>
