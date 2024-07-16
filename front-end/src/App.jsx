@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar';
-import Footer from './Components/Footer';
-import Home from './Components/Home';
+import Footer from './Components/Rodape';
+import Home from './Components/PaginaInicial';
 import Projeto from './Components/Projeto';
 import Tarefa from './Components/Tarefa';
 import Equipe from './Components/Equipe';
@@ -10,7 +10,6 @@ import ListaTarefa from './Components/ListaTarefa';
 import ListaProjeto from './Components/ListaProjeto';
 import CriarUsuario from './Components/CriarUsuario';
 import JivoChatWidget from './Components/Jivochat';
-import Calendar from './Components/Calendar';
 import io from 'socket.io-client';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
@@ -49,7 +48,6 @@ const App = () => {
           <Route path="/listaTarefa" element={<ListaTarefa />} />
           <Route path="/listaProjeto" element={<ListaProjeto />} />
           <Route path="/criar-usuario" element={<CriarUsuario />} />
-          <Route path="/calendar" element={<Calendar />} />
           <Route path="/" element={<Navigate to="/home" />} />
         </Routes>
       </div>
