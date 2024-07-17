@@ -8,13 +8,13 @@ import Tarefa from './Components/Tarefa';
 import Equipe from './Components/Equipe';
 import ListaTarefa from './Components/ListaTarefa';
 import ListaProjeto from './Components/ListaProjeto';
-import CriarUsuario from './Components/CriarUsuario';
-import Login from './Components/login'; 
-import RedefinirSenha from './Components/RedefinirSenha'; 
+//import CriarUsuario from './Components/CriarUsuario';
+//import Login from './Components/login'; 
+//import RedefinirSenha from './Components/RedefinirSenha'; 
 import JivoChatWidget from './Components/Jivochat';
 import io from 'socket.io-client';
 
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+//import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
 const socket = io('http://localhost:5173');
 
@@ -47,30 +47,19 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {isAuthenticated ? (
           <>
             <Navbar notifications={notifications} emails={emails} />
             <div className="main-content">
-              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="/projeto" element={<Projeto />} />
               <Route path="/tarefa" element={<Tarefa />} />
               <Route path="/equipe" element={<Equipe />} />
               <Route path="/listaTarefa" element={<ListaTarefa />} />
               <Route path="/listaProjeto" element={<ListaProjeto />} />
-              <Route path="/criar-usuario" element={<CriarUsuario />} />
-              <Route path="/" element={<Navigate to="/home" />} />
             </div>
             <JivoChatWidget />
             <Footer />
           </>
-        ) : (
-          <>
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-            <Route path="/criar-usuario" element={<CriarUsuario />} />
-            <Route path="/redefinir-senha" element={<RedefinirSenha />} /> {/* Rota para Redefinir Senha */}
-            <Route path="*" element={<Navigate to="/login" />} />
-          </>
-        )}
       </Routes>
     </Router>
   );

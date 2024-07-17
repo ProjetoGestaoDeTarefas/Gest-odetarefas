@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chart } from 'react-google-charts';
+//import { Chart } from 'react-google-charts';
 
 const Home = () => {
   // Dados do gráfico de exemplo
@@ -14,18 +14,7 @@ const Home = () => {
 
   return (
     <div className="container">
-      <h2>Gráfico de Exemplo</h2>
-      <Chart
-        width={'100%'}
-        height={'400px'}
-        chartType="PieChart"
-        loader={<div>Carregando Gráfico</div>}
-        data={chartData}
-        options={{
-          title: 'My Daily Activities',
-        }}
-        rootProps={{ 'data-testid': '1' }}
-      />
+    
     </div>
   );
 };
