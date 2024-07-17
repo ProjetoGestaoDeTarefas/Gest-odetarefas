@@ -48,20 +48,17 @@ const ListaProjeto = () => {
   );
 
   const handleEditarProjeto = (id) => {
-    // Navega para a página de edição do projeto com o ID fornecido
     navigate(`/projeto/update/${id}`);
   };
 
   const handleExcluirProjeto = async (id) => {
     try {
-      // Lógica para excluir o projeto com o ID fornecido
       const response = await fetch(`/api/projeto/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
         throw new Error('Erro ao excluir projeto');
       }
-      // Atualiza a lista de projetos após a exclusão
       setProjetos(projetos.filter(projeto => projeto.id !== id));
       console.log(`Projeto com ID ${id} excluído com sucesso`);
     } catch (error) {
@@ -75,30 +72,26 @@ const ListaProjeto = () => {
         Listagem de Projetos
       </Typography>
 
-      {/* Barra de Pesquisa */}
-      <form className="d-flex mb-2 ml-4" onSubmit={(e) => e.preventDefault()}>
+      <form className="d-flex mb-2 ml-4" onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
         <TextField
-          className="me-2"
           variant="outlined"
           type="text"
           name="pesquisa"
           placeholder="Pesquisa..."
           value={pesquisa}
           onChange={handlePesquisaChange}
-          style={{ width: '50%',marginBottom:'30px',marginTop:'10px'  }}
+          style={{ flexGrow: 1, marginRight: '10px' }}
         />
         <Button
           variant="contained"
           color="primary"
           onClick={handlePesquisaChange}
-          style={{ minWidth: '241px',marginLeft:'10px',marginTop:'20px'}}
+          style={{ minWidth: '150px' }}
         >
-          <i className="fas fa-search me-1"
-          style={{marginLeft:'8px',justifyContent: 'space-around',display:'block'}}></i> Pesquisar
+          <i className="fas fa-search me-1" style={{ marginRight: '8px' }}></i> Pesquisar
         </Button>
       </form>
 
-      {/* Tabela de Projetos */}
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
