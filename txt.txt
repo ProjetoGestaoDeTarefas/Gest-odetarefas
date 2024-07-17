@@ -15,3 +15,12 @@ export default defineConfig({
     },
   },
 })
+
+
+
+//frontend:
+npm i mdb-react-ui-kit
+npm i
+
+//backend:
+npm i

@@ -9,3 +9,8 @@ const db = mysql.createConnection({
 });
 
 module.exports = db;
+
+
+
+//certifique-se que o WMI esta funcionando corretamente;
+//cada conexão é uma, altere as credenciais caso necessário;
