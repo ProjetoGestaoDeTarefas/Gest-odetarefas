@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'; // Importa useEffect e useState do React
 import {
   Container,
   Typography,
   TextField,
   Button,
-  Grid,
   Table,
   TableBody,
   TableCell,
@@ -18,100 +17,109 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CreateIcon from '@mui/icons-material/Create';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import { useNavigate } from 'react-router-dom';
+} from '@mui/material'; // Importa componentes do Material-UI
+import DeleteIcon from '@mui/icons-material/Delete'; // Importa ícone de deletar
+import CreateIcon from '@mui/icons-material/Create'; // Importa ícone de editar
+import ArchiveIcon from '@mui/icons-material/Archive'; // Importa ícone de arquivar
+import { useNavigate } from 'react-router-dom'; // Importa hook de navegação do React Router
 
 const ListaTarefa = () => {
-  const [tarefas, setTarefas] = useState([]);
-  const [search, setSearch] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
-  const [currentAction, setCurrentAction] = useState('');
-  const [currentTaskId, setCurrentTaskId] = useState(null);
-  const navigate = useNavigate();
+  const [tarefas, setTarefas] = useState([]); // Estado para armazenar a lista de tarefas
+  const [search, setSearch] = useState(''); // Estado para armazenar o termo de pesquisa
+  const [openDialog, setOpenDialog] = useState(false); // Estado para controlar a abertura do diálogo de confirmação
+  const [currentAction, setCurrentAction] = useState(''); // Estado para armazenar a ação atual (excluir ou arquivar)
+  const [currentTaskId, setCurrentTaskId] = useState(null); // Estado para armazenar o ID da tarefa sobre a qual a ação será realizada
+  const navigate = useNavigate(); // Hook de navegação do React Router
 
   useEffect(() => {
+    // Função para buscar as tarefas ao carregar o componente
     const fetchTarefas = async () => {
       try {
-        const response = await fetch('/api/projeto');
+        const response = await fetch('/api/projeto'); // Requisição para obter as tarefas da API
         if (!response.ok) {
-          throw new Error('Erro ao buscar tarefas');
+          throw new Error('Erro ao buscar tarefas'); // Lança um erro se a requisição não for bem-sucedida
         }
-        const data = await response.json();
-        setTarefas(data);
+        const data = await response.json(); // Converte a resposta para JSON
+        setTarefas(data); // Atualiza o estado com as tarefas obtidas
       } catch (error) {
-        console.error('Erro ao buscar tarefas:', error);
+        console.error('Erro ao buscar tarefas:', error); // Exibe um erro no console se ocorrer algum problema na busca
       }
     };
 
-    fetchTarefas();
-  }, []);
+    fetchTarefas(); // Chama a função para buscar as tarefas
+  }, []); // O array vazio [] assegura que o useEffect seja executado apenas uma vez, ao montar o componente
 
+  // Função para lidar com a mudança no campo de pesquisa
   const handleSearchChange = (e) => {
-    setSearch(e.target.value);
+    setSearch(e.target.value); // Atualiza o estado de pesquisa com o valor do campo de texto
   };
 
+  // Filtra as tarefas com base no termo de pesquisa inserido
   const filteredTarefas = tarefas.filter((tarefa) =>
     tarefa.descricao.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Função para abrir o diálogo de confirmação de ação (excluir ou arquivar)
   const handleOpenDialog = (action, taskId) => {
-    setCurrentAction(action);
-    setCurrentTaskId(taskId);
-    setOpenDialog(true);
+    setCurrentAction(action); // Define a ação atual (excluir ou arquivar)
+    setCurrentTaskId(taskId); // Define o ID da tarefa sobre a qual a ação será realizada
+    setOpenDialog(true); // Abre o diálogo de confirmação
   };
 
+  // Função para fechar o diálogo de confirmação
   const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setCurrentAction('');
-    setCurrentTaskId(null);
+    setOpenDialog(false); // Fecha o diálogo de confirmação
+    setCurrentAction(''); // Limpa a ação atual
+    setCurrentTaskId(null); // Limpa o ID da tarefa
   };
 
+  // Função para navegar para a página de edição de uma tarefa específica
   const handleEditarProjeto = (id) => {
-    navigate(`/projeto/update/${id}`);
+    navigate(`/projeto/update/${id}`); // Navega para a URL que corresponde à edição da tarefa com o ID fornecido
   };
 
+  // Função para excluir uma tarefa
   const handleExcluirProjeto = async (id) => {
     try {
       const response = await fetch(`/api/projeto/${id}`, {
-        method: 'DELETE',
+        method: 'DELETE', // Requisição DELETE para excluir a tarefa com o ID fornecido
       });
       if (!response.ok) {
-        throw new Error('Erro ao excluir projeto');
+        throw new Error('Erro ao excluir tarefa'); // Lança um erro se a requisição DELETE não for bem-sucedida
       }
-      setTarefas(tarefas.filter((tarefa) => tarefa.id !== id));
-      console.log(`Projeto com ID ${id} excluído com sucesso`);
+      setTarefas(tarefas.filter((tarefa) => tarefa.id !== id)); // Remove a tarefa excluída da lista de tarefas exibida
+      console.log(`Tarefa com ID ${id} excluída com sucesso`); // Exibe mensagem de sucesso no console
     } catch (error) {
-      console.error('Erro ao excluir projeto:', error);
+      console.error('Erro ao excluir tarefa:', error); // Exibe um erro no console se ocorrer algum problema na exclusão
     }
   };
 
+  // Função para arquivar uma tarefa
   const handleArquivarProjeto = async (id) => {
     try {
       const response = await fetch(`/api/projeto/archive/${id}`, {
-        method: 'PATCH',
+        method: 'PATCH', // Requisição PATCH para arquivar a tarefa com o ID fornecido
       });
       if (!response.ok) {
-        throw new Error('Erro ao arquivar projeto');
+        throw new Error('Erro ao arquivar tarefa'); // Lança um erro se a requisição PATCH não for bem-sucedida
       }
       setTarefas(tarefas.map((tarefa) => 
         tarefa.id === id ? { ...tarefa, arquivado: true } : tarefa
-      ));
-      console.log(`Projeto com ID ${id} arquivado com sucesso`);
+      )); // Atualiza a tarefa como arquivada na lista de tarefas exibida
+      console.log(`Tarefa com ID ${id} arquivada com sucesso`); // Exibe mensagem de sucesso no console
     } catch (error) {
-      console.error('Erro ao arquivar projeto:', error);
+      console.error('Erro ao arquivar tarefa:', error); // Exibe um erro no console se ocorrer algum problema no arquivamento
     }
   };
 
+  // Função para confirmar a ação de excluir ou arquivar uma tarefa
   const handleConfirmAction = async () => {
     if (currentAction === 'delete') {
-      await handleExcluirProjeto(currentTaskId);
+      await handleExcluirProjeto(currentTaskId); // Executa a função de exclusão se a ação atual for 'delete'
     } else if (currentAction === 'archive') {
-      await handleArquivarProjeto(currentTaskId);
+      await handleArquivarProjeto(currentTaskId); // Executa a função de arquivamento se a ação atual for 'archive'
     }
-    handleCloseDialog();
+    handleCloseDialog(); // Fecha o diálogo de confirmação após a execução da ação
   };
 
   return (
@@ -120,27 +128,29 @@ const ListaTarefa = () => {
         Listagem de Tarefas
       </Typography>
 
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={8}>
-          <TextField
-            fullWidth
-            variant="outlined"
-            type="text"
-            name="search"
-            placeholder="Pesquisa..."
-            value={search}
-            onChange={handleSearchChange}
-            style={{ marginRight: '10px' }}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="primary" style={{ height: '100%' }}>
-            Pesquisar
-          </Button>
-        </Grid>
-      </Grid>
+      {/* Formulário de pesquisa */}
+      <form className="d-flex mb-2 ml-4" onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+        <TextField
+          variant="outlined"
+          type="text"
+          name="search"
+          placeholder="Pesquisa..."
+          value={search}
+          onChange={handleSearchChange}
+          style={{ flexGrow: 1, marginRight: '10px' }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearchChange}
+          style={{ minWidth: '150px' }}
+        >
+          <i className="fas fa-search me-1" style={{ marginRight: '8px' }}></i> Pesquisar
+        </Button>
+      </form>
 
-      <TableContainer component={Paper} style={{ marginTop: '20px' }}>
+      {/* Tabela de tarefas */}
+      <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -165,16 +175,19 @@ const ListaTarefa = () => {
                 <TableCell>{row.start_date}</TableCell>
                 <TableCell>{row.end_date}</TableCell>
                 <TableCell>
+                  {/* Botão de editar tarefa */}
                   <IconButton aria-label="Editar" onClick={() => handleEditarProjeto(row.id)}>
                     <CreateIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell>
+                  {/* Botão de excluir tarefa */}
                   <IconButton aria-label="Excluir" onClick={() => handleOpenDialog('delete', row.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell>
+                  {/* Botão de arquivar tarefa */}
                   <IconButton aria-label="Arquivar" onClick={() => handleOpenDialog('archive', row.id)}>
                     <ArchiveIcon />
                   </IconButton>
@@ -185,6 +198,7 @@ const ListaTarefa = () => {
         </Table>
       </TableContainer>
 
+      {/* Diálogo de confirmação para ações de excluir ou arquivar tarefa */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
@@ -194,6 +208,7 @@ const ListaTarefa = () => {
         <DialogTitle id="alert-dialog-title">Confirmar Ação</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
+            {/* Mensagem específica dependendo da ação atual */}
             {currentAction === 'delete' && 'Tem certeza que deseja excluir esta tarefa?'}
             {currentAction === 'archive' && 'Tem certeza que deseja arquivar esta tarefa?'}
           </DialogContentText>

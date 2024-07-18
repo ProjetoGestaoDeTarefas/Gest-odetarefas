@@ -14,25 +14,28 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Autocomplete from '@mui/material/Autocomplete';
 
-// eslint-disable-next-line react/prop-types
+// Componente Grouped para exibir e selecionar equipes
 function Grouped({ onAddTeam }) {
   const [options, setOptions] = useState([]);
 
+  // Carrega as opções de equipes ao montar o componente
   useEffect(() => {
     fetch('/api/equipes')
       .then(response => response.json())
       .then(data => {
+        // Formata os dados das equipes para exibição
         const formattedData = data.map(equipe => ({
           firstLetter: equipe.name[0].toUpperCase(),
           ...equipe
         }));
-        setOptions(formattedData);
+        setOptions(formattedData); // Atualiza as opções de equipes no estado
       })
       .catch(error => console.error('Erro ao buscar equipes:', error));
   }, []);
 
   return (
     <Grid item xs={12} sx={{ width: '100%' }}>
+      {/* Componente Autocomplete para seleção de equipe */}
       <Autocomplete
         id="grouped-demo"
         options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
@@ -41,7 +44,7 @@ function Grouped({ onAddTeam }) {
         fullWidth
         onChange={(event, newValue) => {
           if (newValue) {
-            onAddTeam(newValue);
+            onAddTeam(newValue); // Adiciona a equipe selecionada ao projeto
           }
         }}
         renderInput={(params) => <TextField {...params} label="Equipes" />}
@@ -50,6 +53,7 @@ function Grouped({ onAddTeam }) {
   );
 }
 
+// Componente principal para registro de projetos
 function Projeto() {
   const navigate = useNavigate();
 
@@ -64,6 +68,7 @@ function Projeto() {
 
   const [message, setMessage] = useState('');
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -76,12 +81,13 @@ function Projeto() {
     })
       .then(response => response.json())
       .then(data => {
-        setMessage(data.message);
-        navigate('/listaProjeto');
+        setMessage(data.message); // Exibe mensagem de sucesso
+        navigate('/listaProjeto'); // Redireciona para a lista de projetos
       })
       .catch(error => console.error('Erro ao registrar projeto:', error));
   };
 
+  // Função para atualizar o estado do projeto conforme o usuário digita nos campos do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProject((prevProject) => ({
@@ -90,6 +96,7 @@ function Projeto() {
     }));
   };
 
+  // Função para adicionar uma equipe selecionada ao projeto
   const handleAddTeam = (team) => {
     setProject((prevProject) => ({
       ...prevProject,
@@ -100,12 +107,13 @@ function Projeto() {
   return (
     <Container maxWidth="md">
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h4" component="h1" gutterBottom style={{marginTop:'80px'}}>
+        <Typography variant="h4" component="h1" gutterBottom style={{ marginTop: '80px' }}>
           Registro de Projeto
         </Typography>
         <Box component="form" sx={{ mt: 1, width: '100%' }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
+              {/* Campo de texto para o nome do projeto */}
               <TextField
                 fullWidth
                 required
@@ -116,6 +124,7 @@ function Projeto() {
               />
             </Grid>
             <Grid item xs={12}>
+              {/* Campo de texto para a descrição do projeto */}
               <TextField
                 fullWidth
                 required
@@ -126,6 +135,7 @@ function Projeto() {
               />
             </Grid>
             <Grid item xs={12}>
+              {/* Seleção do status do projeto */}
               <FormControl fullWidth required>
                 <InputLabel>Status</InputLabel>
                 <Select name="status" value={project.status} onChange={handleChange}>
@@ -136,6 +146,7 @@ function Projeto() {
               </FormControl>
             </Grid>
             <Grid item xs={6}>
+              {/* Campo de data de início do projeto */}
               <TextField
                 fullWidth
                 required
@@ -148,6 +159,7 @@ function Projeto() {
               />
             </Grid>
             <Grid item xs={6}>
+              {/* Campo de data de término do projeto */}
               <TextField
                 fullWidth
                 required
@@ -159,14 +171,17 @@ function Projeto() {
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
+            {/* Componente Grouped para selecionar equipes */}
             <Grouped onAddTeam={handleAddTeam} />
             <Grid item xs={12} display="flex" justifyContent="center">
+              {/* Botão para submeter o formulário de registro */}
               <Button variant="contained" color="primary" type="submit">
                 Registrar Projeto
               </Button>
             </Grid>
           </Grid>
         </Box>
+        {/* Exibe mensagem de sucesso após o registro */}
         {message && (
           <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
             {message}

@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 
 const Tarefa = () => {
+  // Estado para armazenar os dados da tarefa
   const [task, setTask] = useState({
     name: '',
     description: '',
@@ -26,9 +27,12 @@ const Tarefa = () => {
     members: [],
   });
 
+  // Estado para armazenar o nome do membro a ser adicionado
   const [memberName, setMemberName] = useState('');
+
   const navigate = useNavigate();
 
+  // Função para lidar com a mudança nos campos do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTask((prevTask) => ({
@@ -37,6 +41,7 @@ const Tarefa = () => {
     }));
   };
 
+  // Função para adicionar um membro à lista de membros da tarefa
   const handleAddMember = () => {
     if (memberName) {
       setTask((prevTask) => ({
@@ -47,6 +52,7 @@ const Tarefa = () => {
     }
   };
 
+  // Função para remover um membro da lista de membros da tarefa
   const handleRemoveMember = (index) => {
     setTask((prevTask) => ({
       ...prevTask,
@@ -54,6 +60,7 @@ const Tarefa = () => {
     }));
   };
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = async () => {
     try {
       const response = await fetch('/api/tarefa', {
@@ -77,11 +84,14 @@ const Tarefa = () => {
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" component="h1" gutterBottom style={{display:'flex',alignItems:'center',flexDirection:'column', marginTop:'80px'}}>
+      {/* Título da página */}
+      <Typography variant="h4" component="h1" gutterBottom style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: '80px' }}>
         Registro de Tarefa
       </Typography>
+      {/* Formulário de registro de tarefa */}
       <Box component="form" sx={{ mt: 2 }}>
         <Grid container spacing={2}>
+          {/* Campo de nome da tarefa */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -92,6 +102,7 @@ const Tarefa = () => {
               onChange={handleChange}
             />
           </Grid>
+          {/* Campo de descrição da tarefa */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -102,6 +113,7 @@ const Tarefa = () => {
               onChange={handleChange}
             />
           </Grid>
+          {/* Campo de data de início da tarefa */}
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -114,6 +126,7 @@ const Tarefa = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
+          {/* Campo de data de término da tarefa */}
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -126,6 +139,7 @@ const Tarefa = () => {
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
+          {/* Campo de prioridade da tarefa */}
           <Grid item xs={12}>
             <FormControl fullWidth required>
               <InputLabel>Prioridade</InputLabel>
@@ -141,11 +155,13 @@ const Tarefa = () => {
               </Select>
             </FormControl>
           </Grid>
+          {/* Campo para atribuir membros à tarefa */}
           <Grid item xs={10}>
-            <Typography variant="h6" gutterBottom style={{display:'flex',alignItems:'center',flexDirection:'column',fontSize:'29px',marginLeft:'140px'}}>
+            <Typography variant="h6" gutterBottom style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', fontSize: '29px', marginLeft: '140px' }}>
               Atribuir Tarefa
             </Typography>
             <Grid container spacing={2} alignItems="center" width='1000px'>
+              {/* Campo de entrada para nome do membro */}
               <Grid item xs={10}>
                 <TextField
                   fullWidth
@@ -154,15 +170,18 @@ const Tarefa = () => {
                   onChange={(e) => setMemberName(e.target.value)}
                 />
               </Grid>
+              {/* Botão para adicionar membro */}
               <Grid item xs={2}>
                 <IconButton color="primary" onClick={handleAddMember}>
                   <AddIcon />
                 </IconButton>
               </Grid>
+              {/* Lista de membros atribuídos à tarefa */}
               {task.members.map((member, index) => (
                 <Grid key={index} item xs={12}>
                   <Box display="flex" alignItems="center">
                     <Typography variant="body1">{member}</Typography>
+                    {/* Botão para remover membro */}
                     <IconButton
                       color="secondary"
                       onClick={() => handleRemoveMember(index)}
@@ -174,7 +193,8 @@ const Tarefa = () => {
               ))}
             </Grid>
           </Grid>
-          <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', marginTop: '2px'}}>
+          {/* Botão para enviar o formulário de registro de tarefa */}
+          <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', marginTop: '2px' }}>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
               Registrar Tarefa
             </Button>

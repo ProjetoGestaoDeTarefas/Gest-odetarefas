@@ -13,11 +13,10 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-// eslint-disable-next-line react/prop-types
-
 function Projeto() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook do React Router para navegação programática
 
+    // Estado inicial do projeto
     const [project, setProject] = useState({
         name: '',
         description: '',
@@ -27,11 +26,13 @@ function Projeto() {
         teams: [],
     });
 
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState(''); // Estado para armazenar mensagens
 
+    // Função de envio do formulário
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault(); // Prevenir comportamento padrão do formulário
 
+        // Enviar dados do projeto para a API
         fetch('/api/projeto', {
             method: 'POST',
             headers: {
@@ -39,19 +40,20 @@ function Projeto() {
             },
             body: JSON.stringify(project),
         })
-            .then(response => response.json())
+            .then(response => response.json()) // Processar resposta como JSON
             .then(data => {
-                setMessage(data.message);
-                navigate('/listaProjeto');
+                setMessage(data.message); // Atualizar mensagem com a resposta da API
+                navigate('/listaProjeto'); // Navegar para a lista de projetos
             })
-            .catch(error => console.error('Erro ao registrar projeto:', error));
+            .catch(error => console.error('Erro ao registrar projeto:', error)); // Log de erros
     };
 
+    // Função para lidar com mudanças nos campos do formulário
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProject((prevProject) => ({
             ...prevProject,
-            [name]: value,
+            [name]: value, // Atualizar o estado do projeto com o novo valor do campo
         }));
     };
 
@@ -126,7 +128,7 @@ function Projeto() {
                 </Box>
                 {message && (
                     <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
-                        {message}
+                        {message} {/* Exibir mensagem se estiver presente */}
                     </Typography>
                 )}
             </Box>
