@@ -10,3 +10,4 @@ export default defineConfig({
     },
   },
 })
+//Substitua a porta caso tenha alterado ela no arquivo "server.js".

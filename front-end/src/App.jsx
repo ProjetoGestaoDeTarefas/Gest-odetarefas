@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Navbar from './Components/Navbar'; // Importa o componente Navbar
+import Navbar from './Components/Cabecalho'; // Importa o componente Navbar
 import Footer from './Components/Rodape'; // Importa o componente Footer
 import Home from './Components/PaginaInicial'; // Importa o componente Home
 import Projeto from './Components/Projeto'; // Importa o componente Projeto
