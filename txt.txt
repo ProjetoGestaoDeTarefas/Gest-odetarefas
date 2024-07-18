@@ -1,6 +1,6 @@
 Para iniciar o projeto digite:      npm start     na /Gest-odetarefas
 
-
+Link para a apresentação: https://www.canva.com/design/DAGKmFmReaw/Q4HTucqvZ85g-kgjn7qLDA/edit?utm_content=DAGKmFmReaw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton 
 
 
 import { defineConfig } from 'vite'
