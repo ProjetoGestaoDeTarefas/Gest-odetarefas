@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 
 const Tarefa = () => {
+    // Estado inicial da tarefa
     const [task, setTask] = useState({
         name: '',
         description: '',
@@ -26,34 +27,38 @@ const Tarefa = () => {
         members: [],
     });
 
-    const [memberName, setMemberName] = useState('');
-    const navigate = useNavigate();
+    const [memberName, setMemberName] = useState(''); // Estado para o nome do membro a ser adicionado
+    const navigate = useNavigate(); // Hook do React Router para navegação programática
 
+    // Função para lidar com mudanças nos campos do formulário
     const handleChange = (e) => {
         const { name, value } = e.target;
         setTask((prevTask) => ({
             ...prevTask,
-            [name]: value,
+            [name]: value, // Atualizar o estado da tarefa com o novo valor do campo
         }));
     };
 
+    // Função para adicionar um novo membro à tarefa
     const handleAddMember = () => {
         if (memberName) {
             setTask((prevTask) => ({
                 ...prevTask,
-                members: [...prevTask.members, memberName],
+                members: [...prevTask.members, memberName], // Adicionar novo membro à lista de membros
             }));
-            setMemberName('');
+            setMemberName(''); // Limpar o campo de entrada do membro
         }
     };
 
+    // Função para remover um membro da tarefa
     const handleRemoveMember = (index) => {
         setTask((prevTask) => ({
             ...prevTask,
-            members: prevTask.members.filter((_, i) => i !== index),
+            members: prevTask.members.filter((_, i) => i !== index), // Remover membro pelo índice
         }));
     };
 
+    // Função para enviar a tarefa para a API
     const handleSubmit = async () => {
         try {
             const response = await fetch('/api/tarefa', {
@@ -61,17 +66,17 @@ const Tarefa = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(task),
+                body: JSON.stringify(task), // Enviar dados da tarefa como JSON
             });
 
             if (response.ok) {
-                navigate('/listaTarefa');
+                navigate('/listaTarefa'); // Navegar para a lista de tarefas se a resposta for bem-sucedida
             } else {
-                alert('Falha ao registrar a tarefa');
+                alert('Falha ao registrar a tarefa'); // Exibir alerta em caso de falha
             }
         } catch (error) {
             console.error('Erro ao registrar a tarefa:', error);
-            alert('Erro ao registrar a tarefa');
+            alert('Erro ao registrar a tarefa'); // Exibir alerta em caso de erro
         }
     };
 

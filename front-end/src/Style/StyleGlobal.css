@@ -1,45 +1,50 @@
+/* Definições gerais para o corpo da página */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  margin: 0; /* Remove margens padrão */
+  padding: 0; /* Remove preenchimento padrão */
+  font-family: Arial, sans-serif; /* Define a família de fontes */
+  display: flex; /* Utiliza flexbox para layout */
+  flex-direction: column; /* Direção principal do flexbox é coluna */
+  height: 100vh; /* Ocupa toda a altura da viewport */
 }
 
+/* Estilos para a barra de rolagem no corpo */
 body {
-  scrollbar-width: thin; 
-  scrollbar-color: #ccc #f0f0f0;
+  scrollbar-width: thin; /* Largura fina para a barra de rolagem */
+  scrollbar-color: #ccc #f0f0f0; /* Cor da barra de rolagem e do fundo */
 }
 
-
+/* Estilos específicos para a barra de rolagem no WebKit (Chrome, Safari, etc.) */
 body::-webkit-scrollbar {
-  width: 8px; 
+  width: 8px; /* Largura da barra de rolagem */
 }
 
 body::-webkit-scrollbar-track {
-  background: #f0f0f0; 
+  background: #f0f0f0; /* Cor do fundo da trilha da barra de rolagem */
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #ccc; 
-  border-radius: 4px; 
+  background-color: #ccc; /* Cor do controle deslizante da barra de rolagem */
+  border-radius: 4px; /* Borda arredondada do controle deslizante */
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background-color: #999;
+  background-color: #999; /* Cor do controle deslizante da barra de rolagem ao passar o mouse */
 }
 
+/* Estilos para garantir que o corpo e o HTML ocupem 100% da altura da viewport */
 html, body {
   height: 100%;
 }
 
+/* Estilos específicos para o elemento com id 'root' */
 #root {
-  display: flex;
-  flex-direction: column;
+  display: flex; /* Utiliza flexbox para layout */
+  flex-direction: column; /* Direção principal do flexbox é coluna */
 }
 
+/* Estilos para o conteúdo principal, garantindo que ocupe o espaço restante */
 .main-content {
-  flex: 1;
-  padding: 100px;  
+  flex: 1; /* Ocupa o espaço restante no layout flexível */
+  padding: 100px; /* Preenchimento interno de 100px */
 }
